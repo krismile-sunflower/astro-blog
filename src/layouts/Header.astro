@@ -1,0 +1,28 @@
+---
+import ThemeToggle from "@components/ThemeToggle";
+import Hamburger from "../components/Hamburger.astro";
+import ThemeIcon from "../components/ThemeIcon.astro";
+import Navigation from "./Navigation.astro";
+import Menu from "@components/Menu";
+
+const platform = "github";
+const username = "withastro";
+---
+
+<style>
+  header {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    color: #000;
+    font-weight: bold;
+  }
+</style>
+
+<header class="w-full">
+  <nav class="flex items-center justify-between w-full">
+    <!-- <Navigation client:load /> -->
+     <Menu client:load />
+    <ThemeToggle client:load />
+  </nav>
+</header>

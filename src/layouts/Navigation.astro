@@ -1,0 +1,113 @@
+---
+import { cn } from "@utils/style";
+import { Icon } from "astro-icon/components";
+---
+
+<div class={cn("nav-links", "flex items-center")}>
+  <!-- <Icon
+    name="menu"
+    class={cn("mr-4", "text-2xl block sm:hidden")}
+    id="icon_menu"
+  /> -->
+  <button class={cn("mr-4", "text-2xl block sm:hidden")} id="icon_menu">
+    <!-- <Icon name="menu" /> -->xxx
+  </button>
+  <div class="hidden sm:flex">
+    <a href="/" data-astro-prefetch>首页</a>
+    <a href="/about" data-astro-prefetch>关于</a>
+    <a href="/blog" data-astro-prefetch>博客</a>
+    <a href="/tags" data-astro-prefetch>标签</a>
+  </div>
+
+  <div class={"hidden"} id="menu">
+    <p v-data="/">首页</p>
+    <p v-data="/about">关于</p>
+    <p v-data="/blog">博客</p>
+    <p v-data="/tags">标签</p>
+  </div>
+</div>
+
+<script>
+
+  // const iconMenuElement = document.getElementById("icon_menu");
+  // console.log("🚀 ~ iconMenuElement:", iconMenuElement)
+  // const menuElement = document.getElementById("menu");
+  // console.log("🚀 ~ menuElement:", menuElement)
+  // if (iconMenuElement && menuElement) {
+  //   iconMenuElement.addEventListener("click", () => {
+  //     console.log(
+  //       "🚀 ~ iconMenuElement.addEventListener ~ iconMenuElement:",
+  //       iconMenuElement
+  //     );
+
+  //     menuElement.classList.toggle("hidden");
+  //     const state = (() => {
+  //       if (
+  //         typeof localStorage !== "undefined" &&
+  //         localStorage.getItem("theme")
+  //       ) {
+  //         return localStorage.getItem("theme");
+  //       }
+  //       if (
+  //         typeof window !== "undefined" &&
+  //         window.matchMedia("(prefers-color-scheme: dark)").matches
+  //       ) {
+  //         return "dark";
+  //       }
+  //       return "light";
+  //     })();
+  //     menuElement.classList.add(
+  //       "flex",
+  //       state === "light" ? "bg-white" : "bg-gray-800",
+  //       "gray-400",
+  //       "flex-col",
+  //       "absolute",
+  //       "top-0",
+  //       "left-0",
+  //       "w-1/2",
+  //       "h-screen",
+  //       "p-4",
+  //       "shadow-lg"
+  //     );
+
+  //     // 设置菜单内的 <a> 标签样式
+  //     const links = menuElement.querySelectorAll("p");
+  //     links.forEach((link) => {
+  //       link.classList.add("text-2xl", "mb-4", "text-center");
+  //       link.style.color = state === "light" ? "#000" : "#fff"; // 根据主题设置颜色
+  //       // link.style.textDecoration = "none"; // 示例：移除下划线
+  //       link.addEventListener("click", () => {
+  //         const vData = link.getAttribute("v-data");
+
+  //         // 创建一个新的 <a> 标签
+  //         const aTag = document.createElement("a");
+  //         aTag.href = vData; // 设置跳转的 URL
+  //         aTag.textContent = "Go"; // 设置链接文本，可根据需要调整
+  //         aTag.style.display = "none"; // 隐藏这个 <a> 标签，因为我们不需要显示它
+
+  //         // 将 <a> 标签添加到 body 中（或其他元素中）
+  //         document.body.appendChild(aTag);
+
+  //         // 模拟点击 <a> 标签进行跳转
+  //         aTag.click();
+
+  //         // 可选：之后从 DOM 中移除这个 <a> 标签
+  //         document.body.removeChild(aTag);
+
+  //         menuElement.classList.add("hidden");
+  //       });
+  //       // 可以添加更多样式
+  //     });
+  //   });
+
+  //   document.addEventListener("click", (event) => {
+  //     if (
+  //       !menuElement.contains(event.target) &&
+  //       !iconMenuElement.contains(event.target)
+  //     ) {
+  //       // 如果点击发生在 menuElement 或 iconMenuElement 以外，隐藏 menuElement
+  //       menuElement.classList.add("hidden");
+  //     }
+  //   });
+  // }
+</script>

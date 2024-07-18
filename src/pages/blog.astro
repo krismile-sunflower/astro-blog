@@ -1,0 +1,20 @@
+---
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("posts");
+---
+
+<Layout title="博客">
+  <h1>我的 Astro 学习博客</h1>
+  <ul>
+    {
+      allPosts.map((post) => (
+        <li>
+          <a href={"/posts/" + post.slug}>{post.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>
