@@ -3,8 +3,9 @@ import mdx from '@astrojs/mdx';
 import preact from "@astrojs/preact";
 import { remarkReadingTime } from './remark-reading-time.mjs';
 import tailwind from "@astrojs/tailwind";
-
 import icon from "astro-icon";
+
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
@@ -34,7 +35,11 @@ export default defineConfig({
     gfm: true,
     remarkPlugins: [remarkReadingTime]
   },
-  integrations: [preact({ compat: true }), mdx(), tailwind(), icon({
-    iconDir: "src/icons",
-  })]
+  integrations: [preact({
+    compat: true
+  }), mdx(), tailwind(), icon({
+    iconDir: "src/icons"
+  })],
+  output: "server",
+  adapter: vercel()
 });
