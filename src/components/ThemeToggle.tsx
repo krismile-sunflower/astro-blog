@@ -23,7 +23,9 @@ export default function ThemeToggle() {
             document.documentElement.classList.remove("dark");
         }
         localStorage.setItem("theme", theme);
-        // document.documentElement.style.backgroundImage = `url(${theme === "light" ? '/bg03.jpg' : '/bg00.jpg'})`;
+        const backgroundImage = theme === "dark" ? '/bg00.jpg' : '/bg03.jpg';
+        document.documentElement.style.backgroundImage = `url('${backgroundImage}')`;
+       
     }, [theme]);
 
     const [isMounted, setIsMounted] = useState(false);

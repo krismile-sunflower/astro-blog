@@ -1,6 +1,6 @@
 html {
     
-    background-image: url('/bg03.jpg');
+    /* background-image: url('/bg03.jpg'); */
     /* font-family: sans-serif; */
     font-family: 'Roboto Slab Variable', serif;
     color: white;
@@ -14,7 +14,7 @@ html {
 }
 
 html.dark {
-    background-image: url('/bg00.jpg');
+    /* background-image: url('/bg00.jpg'); */
     color: #fff;
     background-size: cover;
     background-attachment: fixed;
