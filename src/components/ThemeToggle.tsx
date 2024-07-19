@@ -1,6 +1,4 @@
 import { useEffect, useState } from "preact/hooks";
-import lightBg from "../assets/bg/bg00.jpg";
-import darkBg from "../assets/bg/bg03.jpg";
 
 export default function ThemeToggle() {
     const state = (() => {
@@ -40,6 +38,6 @@ export default function ThemeToggle() {
 
 
     return (
-        <button onClick={handleClick}>{theme === "light" ? "🌙" : "🌞"}</button>
+        <button onClick={handleClick}>{theme !== "light" ? "🌙" : "🌞"}</button>
     );
 }
