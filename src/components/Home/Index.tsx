@@ -1,8 +1,29 @@
-import { useEffect } from "preact/hooks";
+import { sleep } from "@utils/common";
+import { useEffect, useState } from "preact/hooks";
 
-export default function Home() {
+export default function Index() {
+  const [dataList, setDataList] = useState<string[]>([]);
+
+  const init = async () => {
+    const response = await fetch("/api/home.json");
+    const data = await response.json();
+    console.log("🚀 ~ init ~ data:", data)
+    const len = data.one.length;
+    let oneStr = "";
+    let twoStr = "";
+    for (let i = 0; i < len; i++) {
+      oneStr += data.one[i];
+      twoStr += data.two[i];
+      setDataList([oneStr, twoStr]);
+      await sleep(250)
+      
+    }
+    
+    setDataList([data.one, data.two]);
+  };
   useEffect(() => {
     document.documentElement.classList.add("animate-bg");
+    init();
   }, []);
   const handle = () => {
     document.documentElement.classList.remove("animate-bg");
@@ -31,8 +52,12 @@ export default function Home() {
       }
       onClick={() => handle()}
     >
-      <h1 className={"w-12 leading-relaxed italic font-bold"} style={{ fontFamily: "'Kalam', cursive"}}>今日江头两三树</h1>
-      <h1 className={"w-12 leading-relaxed italic font-bold"} style={{ fontFamily: "'Kalam', cursive"}}>可怜和叶度残春</h1>
+      <h1 className={"w-12 leading-relaxed italic font-bold h-[23ch]"} >
+        {dataList.length > 0 && dataList[0]}
+      </h1>
+      <h1 className={"w-12 leading-relaxed italic font-bold h-[23ch]"} >
+      {dataList.length > 0 && dataList[1]}
+      </h1>
     </div>
   );
 }

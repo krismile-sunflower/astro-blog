@@ -15,6 +15,10 @@ export default {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
         },
+        typing: {
+          "0%": { width: 0 },
+          "100%": { width: '23ch' },
+        },
       },
 	  animation: {
         wiggle: 'wiggle 0.5s ease-in-out',
