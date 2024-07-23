@@ -1,8 +1,74 @@
 ---
-import Layout from '../layouts/Layout.astro';
-export const prerender = false
+import Layout from "../layouts/Layout.astro";
+export const prerender = false;
+import * as os from "os";
+const hostName = os.hostname();
+function getMemInfo() {
+  const totalMemory = os.totalmem();
+  const freeMemory = os.freemem();
+  const usedMemory = totalMemory - freeMemory;
+  const memoryUsagePercentage = (
+    ((totalMemory - freeMemory) / totalMemory) *
+    100
+  ).toFixed(2);
+  const mem = {
+    total: totalMemory,
+    used: usedMemory,
+    free: freeMemory,
+    usage: memoryUsagePercentage,
+  };
+  return mem;
+}
+
+function getCpuInfo() {
+  const cpus = os.cpus();
+  const cpuInfo = cpus.reduce(
+    (info, cpu) => {
+      info.cpuNum += 1;
+      info.user += cpu.times.user;
+      info.sys += cpu.times.sys;
+      info.idle += cpu.times.idle;
+      info.total += cpu.times.user + cpu.times.sys + cpu.times.idle;
+      return info;
+    },
+    { user: 0, sys: 0, idle: 0, total: 0, cpuNum: 0 }
+  );
+  const cpu = {
+    cpuNum: cpuInfo.cpuNum,
+    sys: ((cpuInfo.sys / cpuInfo.total) * 100).toFixed(2),
+    used: ((cpuInfo.user / cpuInfo.total) * 100).toFixed(2),
+    free: ((cpuInfo.idle / cpuInfo.total) * 100).toFixed(2),
+  };
+  return cpu;
+}
 ---
 
 <Layout title="关于">
-    <h3>黄河之水天上来，奔流到海不复回！</h3>
+  <h3>黄河之水天上来，奔流到海不复回！</h3>
+  <div class="border-2 rounded-sm border-dotted p-4 my-4 border-e-gray-400 font-bold text-lg">
+    <h3>内存信息</h3>
+    <p>总内存：{getMemInfo().total}</p>
+    <p>已使用内存：{getMemInfo().used}</p>
+    <p>空闲内存：{getMemInfo().free}</p>
+    <p>内存使用率：{getMemInfo().usage}%</p>
+  </div>
+  <div class="border-2 rounded-sm border-dotted p-4 my-4 border-e-gray-400 font-bold text-lg">
+    <h3>CPU信息</h3>
+    <p>CPU核心数：{getCpuInfo().cpuNum}</p>
+    <p>CPU使用率：{getCpuInfo().used}%</p>
+    <p>CPU空闲率：{getCpuInfo().free}%</p>
+    <p>CPU系统使用率：{getCpuInfo().sys}%</p>
+  </div>
+  <div class="border-2 rounded-sm border-dotted p-4 my-4 border-e-gray-400 font-bold text-lg">
+    <h3>服务器信息</h3>
+    <p>操作系统：{os.type()}</p>
+    <p>操作系统平台：{os.platform()}</p>
+    <p>操作系统版本：{os.release()}</p>
+    <p>操作系统架构：{os.arch()}</p>
+    <p>服务器运行时间：{os.uptime()}秒</p>
+    <p>服务器负载：{os.loadavg()}</p>
+    <p>服务器主机名：{os.hostname()}</p>
+    <p>服务器CPU架构：{os.cpus()[0].model}</p>
+    <p>服务器CPU核心数：{os.cpus().length}</p>
+  </div>
 </Layout>
