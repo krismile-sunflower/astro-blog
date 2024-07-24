@@ -1,63 +1,81 @@
-import { sleep } from "@utils/common";
 import { useEffect, useState } from "preact/hooks";
+import css from "./index.module.css";
+import { cn } from "@utils/style";
+import LevitationMenu from "@components/LevitationMenu";
+
+// 创建一个格式化日期的函数
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  }).format(date);
+};
+
+const formatTime = (date: Date) => {
+  return new Intl.DateTimeFormat("zh-CN", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  }).format(date);
+};
 
 export default function Index() {
-  const [dataList, setDataList] = useState<string[]>([]);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
-  const init = async () => {
-    const response = await fetch("/api/home.json");
-    const data = await response.json();
-    console.log("🚀 ~ init ~ data:", data)
-    const len = data.one.length;
-    let oneStr = "";
-    let twoStr = "";
-    for (let i = 0; i < len; i++) {
-      oneStr += data.one[i];
-      twoStr += data.two[i];
-      setDataList([oneStr, twoStr]);
-      await sleep(250)
-      
-    }
-    
-    setDataList([data.one, data.two]);
-  };
   useEffect(() => {
-    document.documentElement.classList.add("animate-bg");
-    init();
-  }, []);
-  const handle = () => {
-    document.documentElement.classList.remove("animate-bg");
+    const timer = setTimeout(() => {
+      setCurrentTime(new Date());
+    }, 1000);
 
-    const toNav = (e: string) => {
-      document.documentElement.classList.remove("animate-bg");
-      const aTag = document.createElement("a");
-      aTag.href = e; // 设置跳转的 URL
-      aTag.textContent = "Go"; // 设置链接文本，可根据需要调整
-      aTag.style.display = "none"; // 隐藏这个 <a> 标签，因为我们不需要显示它
-      // 将 <a> 标签添加到 body 中（或其他元素中）
-      document.body.appendChild(aTag);
-      // 模拟点击 <a> 标签进行跳转
-      aTag.click();
-      // 可选：之后从 DOM 中移除这个 <a> 标签
-      document.body.removeChild(aTag);
-    };
+    // 清除定时器
+    return () => clearTimeout(timer);
+  }, [currentTime]);
 
-    toNav("/blog");
-  };
-  
   return (
-    <div
-      className={
-        "flex items-center justify-center h-full cursor-pointer gap-5"
-      }
-      onClick={() => handle()}
-    >
-      <h1 className={"w-12 leading-relaxed italic font-bold h-[23ch]"} >
-        {dataList.length > 0 && dataList[0]}
-      </h1>
-      <h1 className={"w-12 leading-relaxed italic font-bold h-[23ch]"} >
-      {dataList.length > 0 && dataList[1]}
-      </h1>
+    <div className={"flex justify-center items-center h-full w-full"}>
+      <div
+        className={
+          "hidden sm:flex w-[1000px] h-[600px] mt-[200px]"
+        }
+      >
+        <div className={'font-bold w-[500px] text-center pt-[100px]'}>
+          <h1>krismile🥤</h1>
+          <div className={cn('text-xl text-center py-3')}>
+            <p>今日江头两三春，</p>
+            <p>可怜和叶度残春。</p>
+          </div>
+        </div>
+
+        <div className={'w-[500px] pl-[100px] text-center'}>
+          <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
+          <div className={'font-bold'}>{formatDate(currentTime)}</div>
+          <div className={'flex flex-wrap gap-5 pl-[100px] text-blue-600'}>
+            <a href="/" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
+              首页
+            </a>
+            <a href="/blog" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
+              博客
+            </a>
+            <a href="/tags" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
+              标签
+            </a>
+            <a href="/about" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
+              关于
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className={"flex sm:hidden"}>
+
+        <div>
+          <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
+          <div className={'font-bold'}>{formatDate(currentTime)}</div>
+        </div>
+
+      </div>
     </div>
   );
 }

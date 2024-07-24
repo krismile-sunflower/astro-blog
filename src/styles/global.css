@@ -1,9 +1,10 @@
 html {
     
     /* background-image: url('/bg03.jpg'); */
-    /* font-family: sans-serif; */
-    font-family: 'Kalam', cursive;
+    font-family: PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif !important;
+    /* font-family: 'Kalam', cursive; */
     color: black;
+    background-image: url('/thumb.jpg');
     /* background-position: 0 0 0 0; */
     background-size: cover;
     background-attachment: fixed;
@@ -14,7 +15,7 @@ html {
 }
 
 html.dark {
-    /* background-image: url('/bg00.jpg'); */
+    background-image: url('/thumb.jpg');
     color: #fff;
     background-size: cover;
     background-attachment: fixed;
@@ -36,24 +37,14 @@ html.dark {
     }
 }
 
-a {
-    color: #fff;
-}
-
-.dark a {
-    color: #fff;
-}
-
 
 body {
-    margin: 0 200px;
     width: 100%;
-    max-width: 150ch;
-    padding: 1rem;
+    /* padding: 1rem; */
     line-height: 1.5;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
 }
 
 @media screen and (max-width: 636px) {
@@ -63,9 +54,9 @@ body {
 
 }
 
-* {
+/* * {
     box-sizing: border-box;
-}
+} */
 
 h1 {
     margin: 1rem 0;

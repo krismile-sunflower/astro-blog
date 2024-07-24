@@ -1,0 +1,45 @@
+.animated-border {
+  border: 2px solid transparent;
+  border-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet) 1;
+  animation: borderAnimation 5s linear infinite alternate;
+}
+
+@keyframes borderAnimation {
+  0% {
+    border-image-source: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+  }
+
+  20% {
+    border-image-source: linear-gradient(to right, orange, yellow, green, blue, indigo, violet, red);
+  }
+
+  40% {
+    border-image-source: linear-gradient(to right, yellow, green, blue, indigo, violet, red, orange);
+  }
+
+  60% {
+    border-image-source: linear-gradient(to right, green, blue, indigo, violet, red, orange, yellow);
+  }
+
+  80% {
+    border-image-source: linear-gradient(to right, blue, indigo, violet, red, orange, yellow, green);
+  }
+
+  100% {
+    border-image-source: linear-gradient(to right, indigo, violet, red, orange, yellow, green, blue);
+  }
+}
+
+.box-border {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin: 20px 0;
+  width: 100px;
+  height: 3rem;
+  border-radius: 13px;
+  background: #e0e0e0;
+  box-shadow:  16px 16px 31px #cecece,
+               -16px -16px 31px #f2f2f2;
+}

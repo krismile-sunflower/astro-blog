@@ -23,8 +23,8 @@ export default function ThemeToggle() {
             document.documentElement.classList.remove("dark");
         }
         localStorage.setItem("theme", theme);
-        const backgroundImage = theme === "dark" ? '/dark.png' : '/light.png';
-        document.documentElement.style.backgroundImage = `url('${backgroundImage}')`;
+        // const backgroundImage = theme === "dark" ? '/dark.png' : '/light.png';
+        // document.documentElement.style.backgroundImage = `url('${backgroundImage}')`;
        
     }, [theme]);
 
@@ -40,6 +40,7 @@ export default function ThemeToggle() {
 
 
     return (
-        <button onClick={handleClick}>{theme !== "light" ? "🌙" : "🌞"}</button>
+        // <button onClick={handleClick}>{theme !== "light" ? "🌙" : "🌞"}</button>
+        <button>🌙</button>
     );
 }
