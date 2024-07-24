@@ -2,6 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import css from "./index.module.css";
 import { cn } from "@utils/style";
 import LevitationMenu from "@components/LevitationMenu";
+import SearchEngine from "@components/SearchEngine";
 
 // 创建一个格式化日期的函数
 const formatDate = (date: Date) => {
@@ -23,6 +24,26 @@ const formatTime = (date: Date) => {
 
 export default function Index() {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+        console.log("🚀 ~ useEffect ~ geolocation:", navigator.geolocation)
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                setLocation({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+            },
+            (error) => {
+                console.error("Error getting location:", error);
+            }
+        );
+    } else {
+        console.error("Geolocation is not supported by this browser.");
+    }
+}, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,6 +53,8 @@ export default function Index() {
     // 清除定时器
     return () => clearTimeout(timer);
   }, [currentTime]);
+
+  const password = import.meta.env.PUBLIC_SECRET_PASSWORD;
 
   return (
     <div className={"flex justify-center items-center h-full w-full"}>
@@ -46,6 +69,8 @@ export default function Index() {
             <p>今日江头两三春，</p>
             <p>可怜和叶度残春。</p>
           </div>
+
+          {/* <SearchEngine /> */}
         </div>
 
         <div className={'w-[500px] pl-[100px] text-center'}>
@@ -68,12 +93,19 @@ export default function Index() {
         </div>
       </div>
 
-      <div className={"flex sm:hidden"}>
+      <div className={"flex flex-col sm:hidden"}>
 
         <div>
           <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
           <div className={'font-bold'}>{formatDate(currentTime)}</div>
         </div>
+
+        {/* <div>
+          {location?.latitude} / {location?.longitude}
+          <p>{password}</p>
+        </div> */}
+
+        {/* <SearchEngine /> */}
 
       </div>
     </div>

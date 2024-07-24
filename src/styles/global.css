@@ -45,3 +45,8 @@ h1 {
     margin: 1rem 0;
     font-size: 2.5rem;
 }
+
+/* 在你的 CSS 文件中添加以下样式 */
+select option {
+    padding: 10px; /* 设置 padding */
+}

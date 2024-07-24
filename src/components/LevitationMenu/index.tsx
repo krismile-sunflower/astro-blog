@@ -10,7 +10,6 @@ export default function LevitationMenu() {
             return window.location.pathname
         }
     };
-    console.log("🚀 ~ LevitationMenu ~ currentUrl:", currentUrl(), '/about' === currentUrl())
     const toNav = (e: string) => {
         setCurrentLink(e);
         document.documentElement.classList.remove("animate-bg");
