@@ -62,7 +62,7 @@ export default function Index() {
       <div>
         <div
           className={
-            "hidden sm:flex w-[1000px] "
+            "hidden sm:flex w-[1000px] mt-[100px]"
           }
         >
           <div className={"flex justify-center items-center "}>

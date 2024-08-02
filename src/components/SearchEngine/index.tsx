@@ -1,22 +1,25 @@
 import { useRef, useState } from "preact/hooks";
 import css from './index.module.css';
 import { cn } from "@utils/style";
+import baidu from '@assets/svg/baidu.svg';
+import bing from '@assets/svg/bing.svg';
+import google from '@assets/svg/google.svg';
 
 const LIST = [
     {
         name: '百度',
         url: 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=',
-        img: '/baidu.svg'
+        img: baidu
     },
     {
         name: '必应',
         url: 'https://cn.bing.com/search?q=',
-        img: '/bing.svg'
+        img: bing
     },
     {
         name: '谷歌',
         url: 'https://www.google.com/search?q=',
-        img: '/google.svg'
+        img: google
     }
 ]
 const Index = () => {
@@ -41,14 +44,13 @@ const Index = () => {
                 <button className={cn(css.button, 'w-[150px] sm:w-[200px]')} type="button" onClick={submit}>{data.name + '搜索'}</button>
 
             </div>
-
             <div className={css.box}>
                 {LIST.map((item) => {
                     return (
                         <div key={item.name} className={css.item} onClick={() => {
                             setData({ name: item.name, url: item.url });
                         }}>
-                            <img src={item.img} alt={item.name} className={css.img} />
+                            <img src={item.img.src} alt={item.name} className={css.img} />
                         </div>
                     )
                 })}
