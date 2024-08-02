@@ -4,11 +4,16 @@ import { cn } from "@utils/style";
 import baidu from '@assets/svg/baidu.svg';
 import bing from '@assets/svg/bing.svg';
 import google from '@assets/svg/google.svg';
+import youdao from '@assets/svg/youdao.svg';
+import shougou from '@assets/svg/shougou.svg';
+import npm from '@assets/svg/npm.svg';
+import github from '@assets/svg/github.svg';
+import bilibili from '@assets/svg/bilibili.svg';
 
 const LIST = [
     {
         name: '百度',
-        url: 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=',
+        url: 'https://www.baidu.com/s?wd=',
         img: baidu
     },
     {
@@ -20,6 +25,31 @@ const LIST = [
         name: '谷歌',
         url: 'https://www.google.com/search?q=',
         img: google
+    },
+    {
+        name: '搜狗',
+        url: 'https://www.sogou.com/web?query=',
+        img: shougou
+    },
+    {
+        name: '有道',
+        url: 'https://www.youdao.com/w/eng/',
+        img: youdao
+    },
+    {
+        name: 'npm',
+        url: 'https://www.npmjs.com/search?q=',
+        img: npm
+    },
+    {
+        name: 'github',
+        url: 'https://github.com/search?q=',
+        img: github
+    },
+    {
+        name: 'bilibili',
+        url: 'https://search.bilibili.com/all?keyword=',
+        img: bilibili
     }
 ]
 const Index = () => {
@@ -27,7 +57,10 @@ const Index = () => {
     const [data, setData] = useState<{ name: string, url: string }>({ name: '必应', url: 'https://cn.bing.com/search?q=' });
     const submit = () => {
         const value = ref.current?.value;
-        window.open(data.url + value);
+        if (value) {
+            window.open(data.url + value);
+        }
+        
     }
     return (
         <div className={'w-full sm:mx-[100px]'}>
