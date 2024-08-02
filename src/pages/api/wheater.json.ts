@@ -6,7 +6,7 @@ const localExecutablePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 
 const remoteExecutablePath =
-  "https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar";
+  "https://github.com/Sparticuz/chromium/releases/download/v126.0.0/chromium-v126.0.0-pack.tar";
 
 export const GET: APIRoute = async ({ params, request }) => {
   const isDev = process.env.NODE_ENV === "development";
