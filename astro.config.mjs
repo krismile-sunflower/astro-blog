@@ -38,4 +38,7 @@ export default defineConfig({
   }), mdx(), tailwind(), icon({
     iconDir: "src/icons"
   })],
+  experimental: {
+  
+  }
 });
