@@ -28,22 +28,22 @@ export default function Index() {
 
   useEffect(() => {
     if (navigator.geolocation) {
-        console.log("🚀 ~ useEffect ~ geolocation:", navigator.geolocation)
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                setLocation({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                });
-            },
-            (error) => {
-                console.error("Error getting location:", error);
-            }
-        );
+      console.log("🚀 ~ useEffect ~ geolocation:", navigator.geolocation)
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
     } else {
-        console.error("Geolocation is not supported by this browser.");
+      console.error("Geolocation is not supported by this browser.");
     }
-}, []);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,57 +57,76 @@ export default function Index() {
   const password = import.meta.env.PUBLIC_SECRET_PASSWORD;
 
   return (
-    <div className={"flex justify-center items-center h-full w-full"}>
-      <div
-        className={
-          "hidden sm:flex w-[1000px] h-[600px] mt-[200px]"
-        }
-      >
-        <div className={'font-bold w-[500px] text-center pt-[100px]'}>
-          <h1>krismile🥤</h1>
-          <div className={cn('text-xl text-center py-3')}>
-            <p>今日江头两三春，</p>
-            <p>可怜和叶度残春。</p>
+    <div className={'h-full w-full'}>
+
+      <div>
+        <div
+          className={
+            "hidden sm:flex w-[1000px] "
+          }
+        >
+          <div className={"flex justify-center items-center "}>
+            <div className={'font-bold w-[500px] text-center'}>
+              <h1>krismile🥤</h1>
+              <div className={cn('text-xl text-center py-3')}>
+                <p>今日江头两三春，</p>
+                <p>可怜和叶度残春。</p>
+              </div>
+            </div>
+            <div className={'w-[500px] pl-[100px] text-center'}>
+              <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
+              <div className={'font-bold'}>{formatDate(currentTime)}</div>
+              <div className={'flex flex-wrap gap-5 pl-[100px] text-blue-600'}>
+                <a href="/" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
+                  首页
+                </a>
+                <a href="/blog" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
+                  博客
+                </a>
+                <a href="/tags" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
+                  标签
+                </a>
+                <a href="/about" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
+                  关于
+                </a>
+              </div>
+            </div>
           </div>
 
-          {/* <SearchEngine /> */}
         </div>
 
-        <div className={'w-[500px] pl-[100px] text-center'}>
-          <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
-          <div className={'font-bold'}>{formatDate(currentTime)}</div>
-          <div className={'flex flex-wrap gap-5 pl-[100px] text-blue-600'}>
-            <a href="/" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
-              首页
-            </a>
-            <a href="/blog" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
-              博客
-            </a>
-            <a href="/tags" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
-              标签
-            </a>
-            <a href="/about" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
-              关于
-            </a>
+        <div className={'hidden sm:flex justify-center items-center mt-10'}>
+          <SearchEngine />
+        </div>
+
+
+        {/* 移动端样式 */}
+        <div className={"flex flex-col sm:hidden"}>
+
+          <div className={'flex flex-col justify-center items-center'}>
+            <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
+            <div className={'font-bold'}>{formatDate(currentTime)}</div>
+            <div className={'flex justify-center items-center mt-10'}>
+              <SearchEngine />
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className={"flex flex-col sm:hidden"}>
-
-        <div>
-          <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
-          <div className={'font-bold'}>{formatDate(currentTime)}</div>
-        </div>
-
-        {/* <div>
+          {/* <div>
           {location?.latitude} / {location?.longitude}
           <p>{password}</p>
         </div> */}
 
-        {/* <SearchEngine /> */}
+
+
+        </div>
+
+
 
       </div>
+
+
+
+
     </div>
   );
 }

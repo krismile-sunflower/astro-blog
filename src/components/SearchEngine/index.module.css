@@ -1,0 +1,28 @@
+.input {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 5px;
+    inset-inline: 0;
+    color: black;
+    outline: none;
+}
+
+.button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #ffeb3b, #009688, yellowgreen, pink, #03a9f4, #9c27b0, #8bc34a);
+}
+
+.box {
+    display: flex;
+    gap: 3;
+    justify-content: center;
+}
+
+.img {
+    width: 25px;
+    height: 25px;
+    margin-right: 20px;
+    margin-top: 10px;
+}

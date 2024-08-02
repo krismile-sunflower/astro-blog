@@ -1,46 +1,61 @@
+import { useRef, useState } from "preact/hooks";
+import css from './index.module.css';
+import { cn } from "@utils/style";
 
-
-
-const SearchEngine = () => {
-    const searchList = [
-        { name: 'Google', url: 'http://www.google.com/search', keyword: 'q' },
-        { name: 'Baidu', url: 'http://www.baidu.com/baidu', keyword: 'word' },
-    ]
-
-    const svg = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-arrow" data-v-2cf048fe=""><path d="M12.3458 5.84433C12.487 5.6224 12.3276 5.33203 12.0646 5.33203L3.94569 5.33203C3.68266 5.33203 3.52322 5.6224 3.66446 5.84433L7.72389 11.2235C7.85489 11.4293 8.15536 11.4293 8.28636 11.2235L12.3458 5.84433Z"></path></svg>;
-
+const LIST = [
+    {
+        name: '百度',
+        url: 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=',
+        img: '/baidu.svg'
+    },
+    {
+        name: '必应',
+        url: 'https://cn.bing.com/search?q=',
+        img: '/bing.svg'
+    },
+    {
+        name: '谷歌',
+        url: 'https://www.google.com/search?q=',
+        img: '/google.svg'
+    }
+]
+const Index = () => {
+    const ref = useRef<HTMLInputElement>(null);
+    const [data, setData] = useState<{ name: string, url: string }>({ name: '必应', url: 'https://cn.bing.com/search?q=' });
+    const submit = () => {
+        const value = ref.current?.value;
+        window.open(data.url + value);
+    }
     return (
-        <div>
-            <button>xx</button>
-            <div className={'flex flex-col'}>
-                {searchList.map((item, index) => {
-                    return <button key={index} className={'bg-slate-900 px-3 py-3'}>
-                        {item.name}
-                    </button>
+        <div className={'w-full sm:mx-[100px]'}>
+            <div className={'flex justify-center items-center'}>
+                <input className={cn(css.input, 'w-full')} ref={ref}
+                    placeholder={'正在使用' + data.name + '搜索引'}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            submit();
+                        }
+                    }
+
+                    } />
+                <button className={cn(css.button, 'w-[150px] sm:w-[200px]')} type="button" onClick={submit}>{data.name + '搜索'}</button>
+
+            </div>
+
+            <div className={css.box}>
+                {LIST.map((item) => {
+                    return (
+                        <div key={item.name} className={css.item} onClick={() => {
+                            setData({ name: item.name, url: item.url });
+                        }}>
+                            <img src={item.img} alt={item.name} className={css.img} />
+                        </div>
+                    )
                 })}
             </div>
-            {/* <select id="mounth" className={'bg-slate-900 px-5 py-3'}>
-                {searchList.map((item, index) => {
-                    return <option key={index} value={item.name}>
-                        {item.name}
-                    </option>
-                })}
-            </select> */}
 
-            {/* {searchList.map((item, index) => {
-                return <div key={index}>
-                    <span>{item.name}</span>
-                    <form action={item.url} target="_blank">
-                        <select id="mounth" className={'bg-slate-900'}>
-                            <option value="hide">-- Month --</option>
-                            <option value="january">January</option>
-                        </select>
-                        <input name={item.keyword} type="text" className={'bg-slate-500'} /> <input value={item.name} type="submit" />
-                    </form>
-                </div>
-            })} */}
         </div>
     );
-};
+}
 
-export default SearchEngine;
+export default Index;
