@@ -84,3 +84,10 @@ h4 {
     font-weight: bold;
     unicode-bidi: isolate;
 }
+
+
+pre {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    padding: 0.5rem 1rem;
+}

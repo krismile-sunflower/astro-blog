@@ -45,11 +45,9 @@ function getCpuInfo() {
 
 <Layout title="关于">
   <h3>黄河之水天上来，奔流到海不复回！</h3>
+  
   <div class="border-2 rounded-sm border-dotted p-4 my-4 border-e-gray-400 font-bold text-lg">
     <h3>内存信息</h3>
-    <p>总内存：{getMemInfo().total}</p>
-    <p>已使用内存：{getMemInfo().used}</p>
-    <p>空闲内存：{getMemInfo().free}</p>
     <p>内存使用率：{getMemInfo().usage}%</p>
   </div>
   <div class="border-2 rounded-sm border-dotted p-4 my-4 border-e-gray-400 font-bold text-lg">
@@ -61,13 +59,6 @@ function getCpuInfo() {
   </div>
   <div class="border-2 rounded-sm border-dotted p-4 my-4 border-e-gray-400 font-bold text-lg">
     <h3>服务器信息</h3>
-    <p>操作系统：{os.type()}</p>
-    <p>操作系统平台：{os.platform()}</p>
-    <p>操作系统版本：{os.release()}</p>
-    <p>操作系统架构：{os.arch()}</p>
-    <p>服务器运行时间：{os.uptime()}秒</p>
-    <p>服务器负载：{os.loadavg()}</p>
-    <p>服务器主机名：{os.hostname()}</p>
     <p>服务器CPU架构：{os.cpus()[0].model}</p>
     <p>服务器CPU核心数：{os.cpus().length}</p>
   </div>

@@ -17,30 +17,23 @@ import CodeBlock from "@components/CodeBlock";
 **局部安装**：
 
 <CodeBlock
-  code={ `
-  npm install -g localtunnel
-  lt --port 端口号
-  `}
+  code={ 
+  `npm install -g localtunnel\nlt --port 端口号`
+  }
   language="javascript"
   client:load
 />
 
 **全局安装**：
 <CodeBlock
-  code={ `
-  npx localtunnel --port 端口号
-  `}
+  code={ `npx localtunnel --port 端口号`}
   language="javascript"
   client:load
 />
 
 ### NPM 包更新
 <CodeBlock
-  code={ `
-  npm install -g npm-check-updates
-  ncu -u
-  npm install
-  `}
+  code={ `npm install -g npm-check-updates\nncu -u\nnpm install`}
   language="javascript"
   client:load
 />
