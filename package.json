@@ -30,6 +30,7 @@
     "typescript": "^5.5.3"
   },
   "devDependencies": {
-    "puppeteer": "^22.15.0"
+    "puppeteer": "^22.15.0",
+    "shiki": "^1.12.1"
   }
 }

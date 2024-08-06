@@ -1,0 +1,46 @@
+---
+title: "实用工具"
+pubDate: 2022-07-01
+description: "我的一些实用工具。"
+author: "krismile🥤"
+image:
+  url: "https://docs.astro.build/assets/rose.webp"
+  alt: "The Astro logo on a dark background with a pink glow."
+tags: ["JS", "实用工具"]
+---
+
+import CodeBlock from "@components/CodeBlock";
+
+### 内网穿透 - 端口映射
+
+
+**局部安装**：
+
+<CodeBlock
+  code={ `
+  npm install -g localtunnel
+  lt --port 端口号
+  `}
+  language="javascript"
+  client:load
+/>
+
+**全局安装**：
+<CodeBlock
+  code={ `
+  npx localtunnel --port 端口号
+  `}
+  language="javascript"
+  client:load
+/>
+
+### NPM 包更新
+<CodeBlock
+  code={ `
+  npm install -g npm-check-updates
+  ncu -u
+  npm install
+  `}
+  language="javascript"
+  client:load
+/>

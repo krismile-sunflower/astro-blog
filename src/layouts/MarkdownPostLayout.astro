@@ -1,29 +1,67 @@
 ---
 import Layout from "./Layout.astro";
-const { frontmatter  } = Astro.props;
+const { frontmatter, data } = Astro.props;
+
+const headings: { level: number; text: string; id: string }[] = [];
+
+data.split("\n").forEach((line: string) => {
+  const match = line.trim().match(/^(#{1,6})\s+(.*)/);
+  if (match) {
+    const level = match[1].length;
+    const text = match[2];
+    const id = text.toLowerCase().replace(/\s+/g, "-");
+    headings.push({ level, text, id });
+  }
+});
 ---
 
 <Layout title={frontmatter.title}>
-  <p>预计阅读时间: {frontmatter.minutesRead}</p>
-  <p>{frontmatter.pubDate.toString().slice(0, 10)}</p>
-  <p><em>{frontmatter.description}</em></p>
-  <p>来自: {frontmatter.author}</p>
-  <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
-  <div class="tags">
-    {
-      frontmatter.tags.map((tag: unknown) => (
-        <p class="tag">
-          <a href={`/tags/${tag}`}>{tag}</a>
-        </p>
-      ))
-    }
+  <div class="markdown-post">
+    <strong>预计阅读时间: {frontmatter.minutesRead}</strong>
+    <p>{frontmatter.pubDate.toString().slice(0, 10)}</p>
+    <p><em>{frontmatter.description}</em></p>
+    <p>来自: {frontmatter.author}</p>
+    <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+    <div class="tags">
+      {
+        frontmatter.tags.map((tag: string) => (
+          <p class="tag">
+            <a href={`/tags/${tag}`} class=" text-blue-400">
+              {tag}
+            </a>
+          </p>
+        ))
+      }
+    </div>
+    <slot />
   </div>
-  <slot />
+
+  <div
+    class="sm:block hidden fixed top-[4rem] right-10 text-white py-5 px-3 bg-gray-900 rounded-lg opacity-[0.8]"
+  >
+    <ul id="nav">
+      {
+        headings.map((heading) => (
+          <li style={{ marginLeft: `${(heading.level - 1) * 10}px` }}>
+            <a href={`#${heading.id}`} class="text-blue-400 font-bold">
+              {heading.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </Layout>
 
 <style>
-  a {
-    color: #00539f;
+  .markdown-post {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px 30px;
+    border-radius: 20px;
+  }
+
+  li {
+    list-style: none;
   }
 
   .tags {
@@ -33,10 +71,74 @@ const { frontmatter  } = Astro.props;
 
   .tag {
     margin: 0.25em;
-    border: dotted 1px #a1a1a1;
+    border: dotted 1px transparent;
     border-radius: 0.5em;
-    padding: 0.5em 1em;
+    padding: 0.1em 0.5em;
     font-size: 1.15em;
-    background-color: #f8fcfd;
+    background-color: rgba(255, 255, 255, 0.88);
+    color: #fafafa;
   }
 </style>
+
+<script>
+  /**
+   * 点击侧边栏触发样式效果
+   */
+  document.querySelectorAll("#nav li a").forEach((anchor) => {
+    // 首先清除选中的样式
+    anchor.classList.remove("text-blue-400", "font-bold");
+    anchor.addEventListener("click", function (e) {
+      // 每次点击后清除所有的样式
+      document
+        .querySelectorAll("#nav li a")
+        .forEach((a) => a.classList.remove("text-blue-400", "font-bold"));
+
+      if (e.target) {
+        (e.target as Element).classList.add("text-blue-400", "font-bold");
+      }
+    });
+  });
+
+  /**
+   * 监听滚动事件，高亮显示当前位置
+   */
+
+  const handleIntersection: IntersectionObserverCallback = (
+    entries,
+    observer
+  ) => {
+    const visibleEntries: IntersectionObserverEntry[] = [];
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        visibleEntries.push(entry);
+      }
+    });
+
+    if (visibleEntries.length) {
+      const entry = visibleEntries[0];
+      const id = entry.target.getAttribute("id");
+      const navLink = document.querySelector(`#nav li a[href="#${id}"]`);
+
+      document
+        .querySelectorAll("#nav li a")
+        .forEach((a) => a.classList.remove("text-blue-400", "font-bold"));
+
+      if (navLink) {
+        navLink.classList.add("text-blue-400", "font-bold");
+      }
+    }
+  };
+
+  const options = {
+    root: null, // 观察元素的根元素，null表示视窗
+    rootMargin: "0px 0px -50% 0px", // 根元素的边界，其中 -50% 的下边距会使得目标元素在其底部进入视口的 50% 时触发回调
+    threshold: 0.0, // 交叉比例的阈值，0.5表示元素一半进入视窗时触发回调
+  };
+
+  const observer = new IntersectionObserver(handleIntersection, options);
+  document
+    .querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]")
+    .forEach((heading) => {
+      observer.observe(heading);
+    });
+</script>
