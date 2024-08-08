@@ -32,4 +32,10 @@ const greeting = defineMiddleware(async (context, next) => {
     return next();
 });
 
-export const onRequest = sequence(test, auth, greeting);
+const getPathName = defineMiddleware(async (context, next) => {
+    context.locals.pathname = context.url.pathname;
+    // 返回一个 Response 或者调用 `next()` 的结果
+    return next();
+});
+
+export const onRequest = sequence(test, auth, greeting, getPathName);

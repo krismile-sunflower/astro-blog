@@ -1,6 +1,7 @@
 ---
 import ThemeToggle from "@components/ThemeToggle";
 
+const { pathname } = Astro.locals;
 ---
 
 <style>
@@ -18,7 +19,7 @@ import ThemeToggle from "@components/ThemeToggle";
     <!-- <Navigation client:load /> -->
      <!-- <Menu client:load /> -->
       <div class="text-white sm:hidden">krismile🥤</div>
-      <div class="hidden sm:flex"></div>
+      <div class="hidden sm:flex text-teal-200 text-sm cursor-pointer" id="back" onclick="window.history.back()"> {pathname === '/' ? "" : "返 回"}</div>
     <ThemeToggle client:load />
   </nav>
 </header>

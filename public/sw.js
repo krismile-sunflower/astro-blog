@@ -1,10 +1,10 @@
-// The version of the cache.
+// 缓存的版本号
 const VERSION = "v1";
 
-// The name of the cache
+// 缓存名称
 const CACHE_NAME = `period-tracker-${VERSION}`;
 
-// The static resources that the app needs to function.
+// 需要缓存的静态资源名称
 const APP_STATIC_RESOURCES = [
   "/",
   "/favicon.svg",
@@ -13,7 +13,7 @@ const APP_STATIC_RESOURCES = [
   "/sw.js"
 ];
 
-// On install, cache the static resources
+// 预加载的时候将静态资源进行缓存
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
