@@ -13,6 +13,8 @@ const { title } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+    <link rel="manifest" href="/mainfest.json" />
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -40,5 +42,11 @@ const { title } = Astro.props;
         </div>
       <Footer />
     </div>
+    <script>
+      if ("serviceWorker" in navigator) {
+        console.log("🚀 ~ navigator:", navigator)
+        navigator.serviceWorker.register("/sw.js");
+      }
+    </script>
   </body>
 </html>

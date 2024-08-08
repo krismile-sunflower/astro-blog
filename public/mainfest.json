@@ -1,0 +1,15 @@
+{
+  "name": "krismile🥤 Blog",
+  "short_name": "krismile🥤 Blog",
+  "description": "我的博客，记录一些技术与日常！",
+  "icons": [{
+    "src": "favicon.svg",
+    "sizes": "200x200",
+    "type": "image/svg+xml"
+  }],
+  "background_color": "#fff",
+  "theme_color": "#000",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}
