@@ -1,5 +1,5 @@
 // 缓存的版本号
-const VERSION = "v1";
+const VERSION = "v2";
 
 // 缓存名称
 const CACHE_NAME = `period-tracker-${VERSION}`;
@@ -43,6 +43,14 @@ self.addEventListener("activate", (event) => {
 // 网络请求拦截，存储页面缓存
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
+  // 过滤掉 chrome-extension 协议的请求
+  if (url.protocol === 'chrome-extension:') {
+    return;
+  }
+  // 过滤掉api
+  if (url.pathname.startsWith('/api')) {
+    return;
+  }
   if (url.pathname.startsWith('/')) {
     event.respondWith(
       caches.match(event.request).then((response) => {
