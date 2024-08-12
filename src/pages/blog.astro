@@ -4,24 +4,34 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
 const allPosts = await getCollection("posts");
+
+function formatDate(dateString: string) {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Intl.DateTimeFormat('zh-CN', options).format(new Date(dateString));
+}
+
 ---
 
 <Layout title="往事回顾~">
   <ul>
     {
       allPosts.map((post) => (
-        <li class="block sm:flex sm:gap-2">
-          <img
+        <li class="block sm:flex sm:gap-2 my-[15px] px-5 py-2 rounded-md shadow-md shadow-slate-50">
+          <a  href={"/posts/" + post.slug}><img
             src={post.data.image.url}
             alt={post.data.title}
-            class="w-[400px] h-[200px]"
-          />
-          <div class="flex flex-col justify-center gap-2">
+            class="w-[400px] h-[200px] rounded-md hover:scale-105 transition-transform duration-500"
+           /></a>
+          <div class="flex flex-col gap-2">
             <a href={"/posts/" + post.slug}>
               <span class="text-xl font-bold">{post.data.title}</span>
             </a>
-          
-            <p class=" hidden sm:block">{post.data.description}</p>
+            <p class="text-sm">{formatDate(post.data.pubDate.toString())}</p>
+            <p class="">{post.data.description}</p>
+            <p class="hidden sm:block"> {post.data.tags.map((tag) => {
+              return <span class="text-sm bg-slate-200 px-2 py-1 rounded-md mr-3 text-blue-300">{tag}</span>
+            })} </p>
+           
           </div>
         </li>
       ))
