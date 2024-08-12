@@ -1,5 +1,5 @@
 // 缓存的版本号
-const VERSION = "v2";
+const VERSION = "v1";
 
 // 缓存名称
 const CACHE_NAME = `period-tracker-${VERSION}`;
@@ -51,17 +51,33 @@ self.addEventListener("fetch", (event) => {
   if (url.pathname.startsWith('/api')) {
     return;
   }
+  
   if (url.pathname.startsWith('/')) {
-    event.respondWith(
-      caches.match(event.request).then((response) => {
-        return response || fetch(event.request).then((response) => {
+    // 如何判断是否有网络
+    if (!navigator.onLine) {
+      event.respondWith(
+        caches.match(event.request).then((response) => {
+          return response || fetch(event.request).then((response) => {
+            return caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, response.clone());
+              return response;
+            });
+          }).catch(() => caches.match('/offline'));
+        })
+      );
+    } else {
+      // 有网络的时候直接跳过缓存数据
+      event.respondWith(
+        fetch(event.request).then((response) => {
           return caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, response.clone());
             return response;
           });
-        }).catch(() => caches.match('/offline'));
-      })
-    );
+        })
+      );
+    }
+
+    
   } else {
     event.respondWith(
       caches.match(event.request).then((response) => {

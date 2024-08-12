@@ -6,13 +6,23 @@ import { getCollection } from "astro:content";
 const allPosts = await getCollection("posts");
 ---
 
-<Layout title="博客">
-  <h1>我的 Astro 学习博客</h1>
+<Layout title="往事回顾~">
   <ul>
     {
       allPosts.map((post) => (
-        <li>
-          <a href={"/posts/" + post.slug}>{post.data.title}</a>
+        <li class="block sm:flex sm:gap-2">
+          <img
+            src={post.data.image.url}
+            alt={post.data.title}
+            class="w-[400px] h-[200px]"
+          />
+          <div class="flex flex-col justify-center gap-2">
+            <a href={"/posts/" + post.slug}>
+              <span class="text-xl font-bold">{post.data.title}</span>
+            </a>
+          
+            <p class=" hidden sm:block">{post.data.description}</p>
+          </div>
         </li>
       ))
     }
