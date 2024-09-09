@@ -22,6 +22,7 @@
     "astro-icon": "^1.1.0",
     "clsx": "^2.1.1",
     "mdast-util-to-string": "^4.0.0",
+    "mouse-firework": "^0.0.6",
     "preact": "^10.22.1",
     "puppeteer-core": "^22.15.0",
     "reading-time": "^1.5.0",

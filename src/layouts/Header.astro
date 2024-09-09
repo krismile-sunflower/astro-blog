@@ -16,10 +16,8 @@ const { pathname } = Astro.locals;
 
 <header class="w-full">
   <nav class="flex items-center justify-between w-full px-5 sm:px-20" >
-    <!-- <Navigation client:load /> -->
-     <!-- <Menu client:load /> -->
       <div class="text-white sm:hidden">krismile🥤</div>
       <div class="hidden sm:flex text-teal-200 text-sm cursor-pointer" id="back" onclick="window.history.back()"> {pathname === '/' ? "" : "返 回"}</div>
-    <ThemeToggle client:load />
+      <ThemeToggle client:load />
   </nav>
 </header>

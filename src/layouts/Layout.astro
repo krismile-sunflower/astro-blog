@@ -13,7 +13,12 @@ const { title } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS"
+      href="/rss.xml"
+    />
     <link rel="manifest" href="/mainfest.json" />
     <link
       rel="alternate"
@@ -27,25 +32,54 @@ const { title } = Astro.props;
     <ViewTransitions />
   </head>
   <body>
+
     <div class="flex flex-col h-screen justify-between">
       <div>
         <Header />
         <div id="content" class="sm:mx-56 mx-4">
           <h1>{title}</h1>
-          <div class="prose prose-sm prose-invert max-w-none ">
+          <div class="prose prose-sm prose-invert max-w-none">
             <slot />
           </div>
         </div>
       </div>
       <div class="fixed bottom-10 right-0">
         <LevitationMenu client:load />
-        </div>
+      </div>
       <Footer />
     </div>
+    <!-- <Click client:only="preact" /> -->
     <script>
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/sw.js");
       }
+    </script>
+    <script >
+      import firework from "mouse-firework";
+      document.addEventListener("astro:page-load", () => {
+        firework({
+          excludeElements: ["a"],
+          particles: [
+            {
+              shape: "circle",
+              move: ["emit"],
+              easing: "easeOutExpo",
+              colors: [
+                "rgba(255,182,185,.9)",
+                "rgba(250,227,217,.9)",
+                "rgba(187,222,214,.9)",
+                "rgba(138,198,209,.9)",
+              ],
+              number: 30,
+              duration: [1200, 1800],
+              shapeOptions: {
+                radius: [8, 16],
+              },
+            },
+          ],
+        });
+      });
+   
     </script>
   </body>
 </html>
