@@ -1,24 +1,9 @@
 html {
-
     /* background-image: url('/bg03.jpg'); */
     font-family: PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif !important;
     /* font-family: 'Kalam', cursive; */
-    color: #fff;
+    color: #000;
 }
-
-/* .animate-bg {
-    animation: backgroundSlide 60s linear infinite;
-}
-
-@keyframes backgroundSlide {
-    from {
-        background-position: 0 center;
-    }
-    to {
-        background-position: 100% center;
-    }
-} */
-
 
 body {
     width: 100%;
@@ -26,7 +11,7 @@ body {
     line-height: 1.5;
     overflow-y: auto;
     min-height: 100vh;
-    background-image: url('/thumb.jpg');
+    background-image: url('/bg03.jpg');
     /* background-position: 0 0 0 0; */
     background-size: cover;
     background-attachment: fixed;
@@ -90,4 +75,35 @@ pre {
     white-space: pre-wrap;
     overflow-wrap: break-word;
     padding: 0.5rem 1rem;
+}
+
+/* 暗色模式 */
+html.dark {
+    color: #e5e7eb;
+    background-image: url('/bg00.jpg');
+}
+html.dark body {
+    color: #e5e7eb;
+    background-image: url('/bg00.jpg');
+    /* transition: background 0.5s, color 0.5s; */
+}
+
+html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
+    color: #e5e7eb;
+    text-shadow: 0 2px 8px #000a;
+    transition: color 0.5s;
+}
+
+html.dark p, html.dark li, html.dark pre {
+    color: #e5e7eb;
+    transition: color 0.5s;
+}
+
+html.dark a {
+    color: #60a5fa;
+    transition: color 0.5s;
+}
+
+html.dark .prose {
+    color: #e5e7eb;
 }

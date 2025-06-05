@@ -1,9 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
 import css from "./index.module.css";
 import { cn } from "@utils/style";
-// import LevitationMenu from "@components/LevitationMenu";
 import SearchEngine from "@components/SearchEngine";
-import Wheater from "@components/Wheater";
 // 创建一个格式化日期的函数
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat("zh-CN", {
@@ -34,8 +32,6 @@ export default function Index() {
     return () => clearTimeout(timer);
   }, [currentTime]);
 
-  const password = import.meta.env.PUBLIC_SECRET_PASSWORD;
-
   return (
     <div className={'h-full w-full'}>
 
@@ -53,7 +49,6 @@ export default function Index() {
                 <p>可怜和叶度残春。</p>
               </div>
 
-              <Wheater />
             </div>
             <div className={'w-[500px] pl-[100px] text-center'}>
               <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
@@ -88,28 +83,12 @@ export default function Index() {
           <div className={'flex flex-col justify-center items-center'}>
             <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
             <div className={'font-bold'}>{formatDate(currentTime)}</div>
-            <div><Wheater /></div>
             <div className={'flex justify-center items-center mt-10'}>
               <SearchEngine />
             </div>
           </div>
-
-          {/* <div>
-          {location?.latitude} / {location?.longitude}
-          <p>{password}</p>
-        </div> */}
-
-
-
         </div>
-
-
-
       </div>
-
-
-
-
     </div>
   );
 }

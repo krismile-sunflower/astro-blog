@@ -58,6 +58,13 @@ data.split("\n").forEach((line: string) => {
     background-color: rgba(0, 0, 0, 0.5);
     padding: 20px 30px;
     border-radius: 20px;
+    transition: background-color 0.5s;
+  }
+
+  html.dark .markdown-post {
+    background-color: rgba(24, 24, 27, 0.95);
+    /* 深色主题下更深的背景色 */
+    transition: background-color 0.5s;
   }
 
   li {
