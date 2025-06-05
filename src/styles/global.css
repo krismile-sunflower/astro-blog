@@ -3,6 +3,7 @@ html {
     font-family: PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif !important;
     /* font-family: 'Kalam', cursive; */
     color: #000;
+    background-color: #fff;
 }
 
 body {
@@ -106,4 +107,30 @@ html.dark a {
 
 html.dark .prose {
     color: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]):not(.light):not(.dark),
+  html:not([data-theme]):not(.light):not(.dark) body {
+    color: #e5e7eb;
+    background-image: url('/bg00.jpg');
+    background-color: #18181b;
+  }
+  html:not([data-theme]):not(.light):not(.dark) h1,
+  html:not([data-theme]):not(.light):not(.dark) h2,
+  html:not([data-theme]):not(.light):not(.dark) h3,
+  html:not([data-theme]):not(.light):not(.dark) h4,
+  html:not([data-theme]):not(.light):not(.dark) h5,
+  html:not([data-theme]):not(.light):not(.dark) h6 {
+    color: #e5e7eb;
+    text-shadow: 0 2px 8px #000a;
+  }
+  html:not([data-theme]):not(.light):not(.dark) p,
+  html:not([data-theme]):not(.light):not(.dark) li,
+  html:not([data-theme]):not(.light):not(.dark) pre {
+    color: #e5e7eb;
+  }
+  html:not([data-theme]):not(.light):not(.dark) a {
+    color: #60a5fa;
+  }
 }
