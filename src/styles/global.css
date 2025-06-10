@@ -1,24 +1,18 @@
 html {
-    /* background-image: url('/bg03.jpg'); */
     /* font-family: 'Kalam', cursive; */
     color: theme('colors.neutraltext');
     background-color: theme('colors.neutralbg');
-    font-size: 16px; /* Set base font size */
+    font-size: 16px;
+    background-image: url('/bg03.jpg');
 }
 
 body {
     width: 100%;
-    font-family: theme('fontFamily.sans'); /* Apply Inter as the default font */
-    line-height: 1.6; /* Adjust line height for better readability */
+    font-family: theme('fontFamily.sans');
+    line-height: 1.6;
     overflow-y: auto;
     min-height: 100vh;
-    /* background-image: url('/bg03.jpg'); */ /* Removing background image for now */
-    /* background-position: 0 0 0 0; */
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: repeat-x;
-    background-position: center center;
-    min-height: 100vh;
+    background: none;
     padding: 0;
     margin: 0;
 }
@@ -91,8 +85,8 @@ pre {
 /* 暗色模式 */
 html.dark {
     color: theme('colors.darktext');
+    background-image: url('/bg00.jpg');
     background-color: theme('colors.darkbg');
-    /* background-image: url('/bg00.jpg'); */ /* Removing background image for now */
 }
 
 /* html.dark body rule is removed as color is inherited and bg image removed */
@@ -118,10 +112,10 @@ html.dark .prose {
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not([data-theme]):not(.light):not(.dark) { /* Apply to html directly */
+  html:not([data-theme]):not(.light):not(.dark) {
     color: theme('colors.darktext');
     background-color: theme('colors.darkbg');
-    /* background-image: url('/bg00.jpg'); */ /* Removing background image for now */
+    background-image: url('/bg00.jpg');
   }
   /* body rule under this media query can be removed if settings are on html */
   html:not([data-theme]):not(.light):not(.dark) h1,
