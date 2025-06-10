@@ -36,13 +36,14 @@ export default function Index() {
     <div className={'h-full w-full'}>
 
       <div>
+        {/* Desktop Layout */}
         <div
           className={
-            "hidden sm:flex w-[800px] mt-[100px]"
+            "hidden sm:flex max-w-4xl mx-auto mt-20"  // Changed w-[800px] to max-w-4xl mx-auto, mt-[100px] to mt-20
           }
         >
-          <div className={"flex justify-center items-center "}>
-            <div className={'font-bold w-[600px] text-center'}>
+          <div className={"flex justify-center items-center w-full"}> {/* Added w-full for flex children to work as expected */}
+            <div className={'font-bold w-3/5 pr-6 text-center'}> {/* Changed w-[600px] to w-3/5 pr-6 */}
               <h1>krismile🥤</h1>
               <div className={cn('text-xl text-center py-3')}>
                 <p>今日江头两三春，</p>
@@ -50,10 +51,11 @@ export default function Index() {
               </div>
 
             </div>
-            <div className={'w-[500px] pl-[100px] text-center'}>
+            <div className={'w-2/5 pl-6 text-center'}> {/* Changed w-[500px] pl-[100px] to w-2/5 pl-6 */}
               <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
               <div className={'font-bold'}>{formatDate(currentTime)}</div>
-              <div className={'flex flex-wrap gap-5 pl-[100px] text-blue-600'}>
+              {/* Removed pl-[100px], added justify-center. text-blue-600 is likely overridden. */}
+              <div className={'flex flex-wrap gap-5 justify-center'}>
                 <a href="/" data-astro-prefetch className={cn("text-2xl ", css['box-border'])}>
                   首页
                 </a>
@@ -78,12 +80,12 @@ export default function Index() {
 
 
         {/* 移动端样式 */}
-        <div className={"flex flex-col sm:hidden"}>
+        <div className={"flex flex-col sm:hidden pt-16"}> {/* Added pt-16 */}
 
           <div className={'flex flex-col justify-center items-center'}>
-            <h1 className={'font-bold'}>{formatTime(currentTime)}</h1>
-            <div className={'font-bold'}>{formatDate(currentTime)}</div>
-            <div className={'flex justify-center items-center mt-10'}>
+            <h1 className={'font-bold mb-6'}>{formatTime(currentTime)}</h1> {/* Added mb-6 */}
+            <div className={'font-bold mb-8'}>{formatDate(currentTime)}</div> {/* Added mb-8 */}
+            <div className={'flex justify-center items-center mt-8'}> {/* Changed mt-10 to mt-8 */}
               <SearchEngine />
             </div>
           </div>

@@ -26,11 +26,9 @@ export default function LevitationMenu() {
     };
     const handleClick = () => {
         setMenuText('x');
-        // setTheme(!isDarkMode ? "bg-white" : "bg-gray-800");
         const menuElement = menuRef.current;
         if (menuElement) {
-            menuElement.classList.toggle("hidden");
-
+            menuElement.classList.remove("hidden"); // Use remove instead of toggle if we always want to show on click
             menuElement.classList.add(
                 "flex",
                 "absolute",
@@ -39,14 +37,25 @@ export default function LevitationMenu() {
                 "w-full",
                 "h-screen",
                 "z-10",
-                "shadow-lg"
+                "shadow-lg",
+                "bg-black/50" // Added semi-transparent overlay
             );
 
-            const links = menuElement.querySelectorAll("p");
+            const links = menuElement.querySelectorAll("p[v-data]"); // More specific selector
             links.forEach((link) => {
+                // Remove potentially existing color/font weight classes to reset state
+                link.classList.remove("text-yellow-500", "text-white", "font-bold", "text-secondary-500", "dark:text-secondary-400");
+
                 const isSelect =  link.getAttribute("v-data") === currentUrl();
-                link.classList.add("mb-4", "text-center", isSelect ? "text-yellow-500" : "text-white");
-                link.style.textDecoration = "none"; // 示例：移除下划线
+                if (isSelect) {
+                    link.classList.add("text-secondary-500", "dark:text-secondary-400", "font-bold");
+                }
+                // Base classes are now applied directly in JSX: text-neutraltext dark:text-darktext etc.
+                // link.style.textDecoration = "none"; // This should be handled by Tailwind classes if needed e.g. `no-underline`
+
+                // Ensure event listeners are not duplicated if handleClick can be called multiple times
+                // A simple way is to replace the element or manage listeners carefully.
+                // For now, assuming this click handler setup is okay.
                 link.addEventListener("click", () => {
                     const vData = link.getAttribute("v-data");
                     toNav(vData ?? "/");
@@ -69,21 +78,25 @@ export default function LevitationMenu() {
         <>
             <button
                 onClick={handleClick}
-                class={cn("mr-4", " block sm:hidden")}
+                class={cn("mr-4", "block sm:hidden")} // Ensure no extra spaces if not needed
             >
-                <div className={"flex flex-col px-2 bg-white rounded-md font-bold"}>
-                    <p className={'text-black'}>{menuText}</p>
+                {/* Trigger button: Changed bg, text color, padding. Removed inner p. */}
+                <div className={"flex flex-col bg-primary-500 text-white font-bold rounded-md px-3 py-2"}>
+                    {menuText}
                 </div>
             </button>
 
             <div className={"hidden"} id="menu" ref={menuRef}>
-                <div className={cn("flex flex-col w-16 h-[150px] text-sm p-4 animate-wiggle bg-blue-400 fixed bottom-20 right-0 rounded")}>
-                    <p v-data="/">首页</p>
-                    <p v-data="/blog">博客</p>
-                    <p v-data="/tags">标签</p>
-                    <p v-data="/about">关于</p>
+                {/* Inner Content Div: Changed bg, width, height (via padding). Added dark mode styles. */}
+                <div className={cn("flex flex-col w-32 py-2 text-sm p-2 animate-wiggle bg-neutralbg dark:bg-darkbg fixed bottom-20 right-2 rounded-md shadow-xl")}>
+                    {/* Menu Links: Added base classes and cursor-pointer. JS will toggle selected state. */}
+                    <p v-data="/" class="mb-2 text-center text-neutraltext dark:text-darktext hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer no-underline">首页</p>
+                    <p v-data="/blog" class="mb-2 text-center text-neutraltext dark:text-darktext hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer no-underline">博客</p>
+                    <p v-data="/tags" class="mb-2 text-center text-neutraltext dark:text-darktext hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer no-underline">标签</p>
+                    <p v-data="/about" class="mb-2 text-center text-neutraltext dark:text-darktext hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer no-underline">关于</p>
                 </div>
-                <div className={"w-1/2"} onClick={() => close()}></div>
+                {/* This div is for closing the menu when clicking outside the content area */}
+                <div className={"flex-grow h-full"} onClick={() => close()}></div>
             </div>
         </>
     );

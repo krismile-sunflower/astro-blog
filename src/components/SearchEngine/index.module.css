@@ -1,29 +1,58 @@
 .input {
-    border: none;
+    border: 1px solid theme('colors.neutral.300'); /* Added border */
     border-radius: 5px;
     padding: 10px 5px;
     inset-inline: 0;
-    color: black;
+    /* color: black; Removed, should inherit */
     outline: none;
+    background-color: theme('colors.neutralbg'); /* Match global bg for light mode */
+}
+
+.input:focus {
+    border-color: theme('colors.primary.500');
+    outline: none;
+}
+
+html.dark .input {
+    border-color: theme('colors.neutral.600');
+    background-color: theme('colors.neutral.700'); /* Darker bg for input in dark mode */
+    color: theme('colors.darktext'); /* Ensure text color is correct in dark mode */
+}
+
+html.dark .input:focus {
+    border-color: theme('colors.primary.400');
 }
 
 .button {
     padding: 10px 20px;
     margin-left: 10px;
     border-radius: 10px;
-    background: linear-gradient(45deg, #ffeb3b, #009688, yellowgreen, pink, #03a9f4, #9c27b0, #8bc34a);
+    background-color: theme('colors.secondary.500'); /* Changed background */
+    color: white; /* Added text color */
+    border: none; /* Ensured no border */
+    transition: background-color 0.2s ease-in-out; /* Added transition */
+}
+
+.button:hover {
+    background-color: theme('colors.secondary.600'); /* Added hover state */
 }
 
 .box {
     display: flex;
-    gap: 3;
+    gap: 3; /* Consider using theme.spacing if Tailwind processes this */
     justify-content: center;
 }
 
 .img {
     width: 25px;
     height: 25px;
-    margin-right: 20px;
-    margin-top: 10px;
+    margin-right: 20px; /* Consider theme.spacing */
+    margin-top: 10px; /* Consider theme.spacing */
     cursor: pointer;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out; /* Added transition */
+}
+
+.img:hover {
+    opacity: 0.7; /* Added hover effect */
+    transform: scale(1.1); /* Added hover effect */
 }

@@ -1,5 +1,4 @@
 ---
-import "@fontsource-variable/roboto-slab";
 import "@fontsource/kalam";
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
@@ -36,9 +35,9 @@ const { title } = Astro.props;
     <div class="flex flex-col h-screen justify-between">
       <div>
         <Header />
-        <div id="content" class="sm:mx-56 mx-4">
-          <h1>{title}</h1>
-          <div class="prose prose-sm prose-invert max-w-none">
+        <div id="content" class="mx-4 sm:mx-8 md:mx-16 lg:mx-32 xl:mx-48">
+          <h1 class="mt-8">{title}</h1>
+          <div class="prose prose-sm dark:prose-invert max-w-none mt-6">
             <slot />
           </div>
         </div>

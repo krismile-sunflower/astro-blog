@@ -1,9 +1,18 @@
 import defaultTheme from "tailwindcss/defaultTheme";
+import colors from "tailwindcss/colors"; // Import colors
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      colors: { // Add new color palette
+        primary: colors.sky,
+        secondary: colors.amber,
+        neutraltext: colors.neutral[700],
+        neutralbg: colors.neutral[100],
+        darktext: colors.neutral[200],
+        darkbg: colors.neutral[800],
+      },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
         serif: ["Merriweather", ...defaultTheme.fontFamily.serif],

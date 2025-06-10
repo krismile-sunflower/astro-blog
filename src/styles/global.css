@@ -1,18 +1,18 @@
 html {
     /* background-image: url('/bg03.jpg'); */
-    font-family: PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif !important;
     /* font-family: 'Kalam', cursive; */
-    color: #000;
-    background-color: #fff;
+    color: theme('colors.neutraltext');
+    background-color: theme('colors.neutralbg');
+    font-size: 16px; /* Set base font size */
 }
 
 body {
     width: 100%;
-
-    line-height: 1.5;
+    font-family: theme('fontFamily.sans'); /* Apply Inter as the default font */
+    line-height: 1.6; /* Adjust line height for better readability */
     overflow-y: auto;
     min-height: 100vh;
-    background-image: url('/bg03.jpg');
+    /* background-image: url('/bg03.jpg'); */ /* Removing background image for now */
     /* background-position: 0 0 0 0; */
     background-size: cover;
     background-attachment: fixed;
@@ -22,6 +22,16 @@ body {
     padding: 0;
     margin: 0;
 }
+
+a {
+    color: theme('colors.primary.600');
+    text-decoration: none; /* Optional: remove underline */
+}
+
+a:hover {
+    text-decoration: underline; /* Optional: add underline on hover */
+}
+
 
 /* * {
     box-sizing: border-box;
@@ -80,57 +90,55 @@ pre {
 
 /* 暗色模式 */
 html.dark {
-    color: #e5e7eb;
-    background-image: url('/bg00.jpg');
-}
-html.dark body {
-    color: #e5e7eb;
-    background-image: url('/bg00.jpg');
-    /* transition: background 0.5s, color 0.5s; */
+    color: theme('colors.darktext');
+    background-color: theme('colors.darkbg');
+    /* background-image: url('/bg00.jpg'); */ /* Removing background image for now */
 }
 
+/* html.dark body rule is removed as color is inherited and bg image removed */
+
 html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
-    color: #e5e7eb;
+    color: theme('colors.darktext'); /* Ensure headings also use darktext */
     text-shadow: 0 2px 8px #000a;
     transition: color 0.5s;
 }
 
 html.dark p, html.dark li, html.dark pre {
-    color: #e5e7eb;
+    color: theme('colors.darktext'); /* Ensure paragraphs and lists use darktext */
     transition: color 0.5s;
 }
 
 html.dark a {
-    color: #60a5fa;
+    color: theme('colors.primary.400');
     transition: color 0.5s;
 }
 
 html.dark .prose {
-    color: #e5e7eb;
+    color: theme('colors.darktext'); /* Ensure prose uses darktext */
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not([data-theme]):not(.light):not(.dark),
-  html:not([data-theme]):not(.light):not(.dark) body {
-    color: #e5e7eb;
-    background-image: url('/bg00.jpg');
-    background-color: #18181b;
+  html:not([data-theme]):not(.light):not(.dark) { /* Apply to html directly */
+    color: theme('colors.darktext');
+    background-color: theme('colors.darkbg');
+    /* background-image: url('/bg00.jpg'); */ /* Removing background image for now */
   }
+  /* body rule under this media query can be removed if settings are on html */
   html:not([data-theme]):not(.light):not(.dark) h1,
   html:not([data-theme]):not(.light):not(.dark) h2,
   html:not([data-theme]):not(.light):not(.dark) h3,
   html:not([data-theme]):not(.light):not(.dark) h4,
   html:not([data-theme]):not(.light):not(.dark) h5,
   html:not([data-theme]):not(.light):not(.dark) h6 {
-    color: #e5e7eb;
+    color: theme('colors.darktext'); /* Ensure headings also use darktext */
     text-shadow: 0 2px 8px #000a;
   }
   html:not([data-theme]):not(.light):not(.dark) p,
   html:not([data-theme]):not(.light):not(.dark) li,
   html:not([data-theme]):not(.light):not(.dark) pre {
-    color: #e5e7eb;
+    color: theme('colors.darktext'); /* Ensure paragraphs and lists use darktext */
   }
   html:not([data-theme]):not(.light):not(.dark) a {
-    color: #60a5fa;
+    color: theme('colors.primary.400');
   }
 }
