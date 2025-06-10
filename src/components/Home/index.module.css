@@ -1,33 +1,5 @@
 .animated-border {
-  border: 2px solid transparent;
-  border-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet) 1;
-  animation: borderAnimation 5s linear infinite alternate;
-}
-
-@keyframes borderAnimation {
-  0% {
-    border-image-source: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-  }
-
-  20% {
-    border-image-source: linear-gradient(to right, orange, yellow, green, blue, indigo, violet, red);
-  }
-
-  40% {
-    border-image-source: linear-gradient(to right, yellow, green, blue, indigo, violet, red, orange);
-  }
-
-  60% {
-    border-image-source: linear-gradient(to right, green, blue, indigo, violet, red, orange, yellow);
-  }
-
-  80% {
-    border-image-source: linear-gradient(to right, blue, indigo, violet, red, orange, yellow, green);
-  }
-
-  100% {
-    border-image-source: linear-gradient(to right, indigo, violet, red, orange, yellow, green, blue);
-  }
+  border: 2px solid #00FFFF;
 }
 
 .box-border {

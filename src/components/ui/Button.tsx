@@ -11,7 +11,7 @@ export default function Button(props: ButtonProps) {
   return (
     <button
       onClick={onClick}
-      className={cn("px-5 py-1 rounded-md hover:contrast-150", className)}
+      className={cn("px-5 py-1 rounded-none border border-pixel-accent text-pixel-accent hover:bg-pixel-accent hover:text-neutralbg", className)}
     >
      {children}
     </button>

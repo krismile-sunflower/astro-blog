@@ -1,6 +1,6 @@
 .input {
     border: 1px solid theme('colors.neutral.300'); /* Added border */
-    border-radius: 5px;
+    border-radius: 2px;
     padding: 10px 5px;
     inset-inline: 0;
     /* color: black; Removed, should inherit */
@@ -26,15 +26,15 @@ html.dark .input:focus {
 .button {
     padding: 10px 20px;
     margin-left: 10px;
-    border-radius: 10px;
-    background-color: theme('colors.secondary.500'); /* Changed background */
-    color: white; /* Added text color */
+    border-radius: 2px;
+    background-color: theme('colors.pixel-accent'); /* Changed background */
+    color: theme('colors.neutraltext'); /* Added text color */
     border: none; /* Ensured no border */
-    transition: background-color 0.2s ease-in-out; /* Added transition */
+    transition: background-color 0.2s ease-in-out, filter 0.2s ease-in-out; /* Added transition */
 }
 
 .button:hover {
-    background-color: theme('colors.secondary.600'); /* Added hover state */
+    filter: brightness(90%); /* Added hover state */
 }
 
 .box {

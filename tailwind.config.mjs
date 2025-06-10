@@ -6,17 +6,20 @@ export default {
   theme: {
     extend: {
       colors: { // Add new color palette
-        primary: colors.sky,
-        secondary: colors.amber,
-        neutraltext: colors.neutral[700],
-        neutralbg: colors.neutral[100],
-        darktext: colors.neutral[200],
-        darkbg: colors.neutral[800],
+        primary: {
+          '400': '#FF007F',
+          '500': '#FF007F',
+          '600': '#C0005F',
+        },
+        neutraltext: '#222222',
+        neutralbg: '#F0F0F0',
+        darktext: '#E0E0E0',
+        darkbg: '#1A1A1A',
+        'pixel-accent': '#00FFFF',
       },
       fontFamily: {
-        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        sans: ['PixelFont', "Inter", ...defaultTheme.fontFamily.sans],
         serif: ["Merriweather", ...defaultTheme.fontFamily.serif],
-        kalam: ["Kalam cursive"],
       },
 
       keyframes: {

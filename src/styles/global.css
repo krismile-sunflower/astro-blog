@@ -1,14 +1,22 @@
+@font-face {
+    font-family: 'PixelFont';
+    src: url('/fonts/PixelFont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 html {
-    /* font-family: 'Kalam', cursive; */
+    /* font-family: 'Kalam', cursive; */ # This line is already commented out, so no change needed here.
     color: theme('colors.neutraltext');
     background-color: theme('colors.neutralbg');
     font-size: 16px;
-    background-image: url('/bg03.jpg');
+    background-image: url('/pixel_bg_light.png');
 }
 
 body {
     width: 100%;
-    font-family: theme('fontFamily.sans');
+    font-family: 'PixelFont', theme('fontFamily.sans');
     line-height: 1.6;
     overflow-y: auto;
     min-height: 100vh;
@@ -80,12 +88,13 @@ pre {
     white-space: pre-wrap;
     overflow-wrap: break-word;
     padding: 0.5rem 1rem;
+    border: 1px solid theme('colors.neutraltext');
 }
 
 /* 暗色模式 */
 html.dark {
     color: theme('colors.darktext');
-    background-image: url('/bg00.jpg');
+    background-image: url('/pixel_bg_dark.png');
     background-color: theme('colors.darkbg');
 }
 
@@ -93,12 +102,12 @@ html.dark {
 
 html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
     color: theme('colors.darktext'); /* Ensure headings also use darktext */
-    text-shadow: 0 2px 8px #000a;
     transition: color 0.5s;
 }
 
 html.dark p, html.dark li, html.dark pre {
     color: theme('colors.darktext'); /* Ensure paragraphs and lists use darktext */
+    border: 1px solid theme('colors.darktext'); /* Added border for pre in dark mode */
     transition: color 0.5s;
 }
 
@@ -115,7 +124,7 @@ html.dark .prose {
   html:not([data-theme]):not(.light):not(.dark) {
     color: theme('colors.darktext');
     background-color: theme('colors.darkbg');
-    background-image: url('/bg00.jpg');
+    background-image: url('/pixel_bg_dark.png');
   }
   /* body rule under this media query can be removed if settings are on html */
   html:not([data-theme]):not(.light):not(.dark) h1,
@@ -125,12 +134,12 @@ html.dark .prose {
   html:not([data-theme]):not(.light):not(.dark) h5,
   html:not([data-theme]):not(.light):not(.dark) h6 {
     color: theme('colors.darktext'); /* Ensure headings also use darktext */
-    text-shadow: 0 2px 8px #000a;
   }
   html:not([data-theme]):not(.light):not(.dark) p,
   html:not([data-theme]):not(.light):not(.dark) li,
   html:not([data-theme]):not(.light):not(.dark) pre {
     color: theme('colors.darktext'); /* Ensure paragraphs and lists use darktext */
+    border: 1px solid theme('colors.darktext'); /* Added border for pre in dark mode */
   }
   html:not([data-theme]):not(.light):not(.dark) a {
     color: theme('colors.primary.400');
