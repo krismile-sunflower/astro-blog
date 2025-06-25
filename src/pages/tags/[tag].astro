@@ -1,14 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/Layout.astro';
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/Layout.astro";
 
-export async function getStaticPaths(): Promise<{params: {tag: string}, props: {posts: any}}[]>{
-  const allPosts = await getCollection('posts');
+export async function getStaticPaths(): Promise<{ params: { tag: string }; props: { posts: any } }[]> {
+  const allPosts = await getCollection("posts");
 
-  const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+  const uniqueTags = [
+    ...new Set(allPosts.map((post) => post.data.tags).flat()),
+  ];
 
- return uniqueTags.map((tag) => {
-    const filteredPosts = allPosts.filter((post) => post.data.tags.includes(tag));
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post) =>
+      post.data.tags.includes(tag)
+    );
     return {
       params: { tag },
       props: { posts: filteredPosts },
@@ -20,32 +24,61 @@ const { tag } = Astro.params;
 const { posts } = Astro.props;
 
 function formatDate(dateString: string) {
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Intl.DateTimeFormat('zh-CN', options).format(new Date(dateString));
+  return new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(dateString));
 }
 ---
+
 <BaseLayout title={tag}>
+  <div class="content">
     <p>以下是包含「{tag}」标签的文章</p>
     {
       posts.map((post: any) => (
         <li class="block sm:flex sm:gap-2 my-[15px] px-5 py-2 rounded-md shadow-md shadow-slate-50">
-          <a  href={"/posts/" + post.slug}><img
-            src={post.data.image.url}
-            alt={post.data.title}
-            class="w-[400px] h-[200px] rounded-md hover:scale-105 transition-transform duration-500"
-           /></a>
+          <a href={"/posts/" + post.slug}>
+            <img
+              src={post.data.image.url}
+              alt={post.data.title}
+              class="w-[400px] h-[200px] rounded-md hover:scale-105 transition-transform duration-500"
+            />
+          </a>
           <div class="flex flex-col gap-2">
             <a href={"/posts/" + post.slug}>
               <span class="text-xl font-bold">{post.data.title}</span>
             </a>
             <p class="text-sm">{formatDate(post.data.pubDate.toString())}</p>
             <p class="">{post.data.description}</p>
-            <p class="hidden sm:block"> {post.data.tags.map((tag: string) => {
-              return <span class="text-sm bg-slate-200 px-2 py-1 rounded-md mr-3 text-blue-300">{tag}</span>
-            })} </p>
-           
+            <p class="hidden sm:block">
+              {" "}
+              {post.data.tags.map((tag: string) => {
+                return (
+                  <span class="text-sm bg-slate-200 px-2 py-1 rounded-md mr-3 text-blue-300">
+                    {tag}
+                  </span>
+                );
+              })}{" "}
+            </p>
           </div>
         </li>
       ))
     }
+  </div>
 </BaseLayout>
+
+<style>
+  .content {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px 30px;
+    border-radius: 20px;
+    transition: background-color 0.5s;
+  }
+
+  html.dark .content {
+    background-color: rgba(24, 24, 27, 0.95);
+    /* 深色主题下更深的背景色 */
+    transition: background-color 0.5s;
+  }
+</style>

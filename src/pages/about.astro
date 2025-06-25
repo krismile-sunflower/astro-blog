@@ -43,23 +43,51 @@ function getCpuInfo() {
 }
 ---
 
-<Layout title="关于">
-  <h3>黄河之水天上来，奔流到海不复回！</h3>
-  
-  <div class="rounded-sm p-4 my-4 border-e-gray-400 font-bold text-lg shadow-md shadow-orange-100 cursor-pointer hover:scale-[1.02] duration-500">
-    <h3>内存信息</h3>
-    <p>内存使用率：{getMemInfo().usage}%</p>
-  </div>
-  <div class="rounded-sm p-4 my-4 border-e-gray-400 font-bold text-lg shadow-md shadow-orange-100 cursor-pointer hover:scale-[1.02] duration-500">
-    <h3>CPU信息</h3>
-    <p>CPU核心数：{getCpuInfo().cpuNum}</p>
-    <p>CPU使用率：{getCpuInfo().used}%</p>
-    <p>CPU空闲率：{getCpuInfo().free}%</p>
-    <p>CPU系统使用率：{getCpuInfo().sys}%</p>
-  </div>
-  <div class="rounded-sm p-4 my-4 border-e-gray-400 font-bold text-lg shadow-md shadow-orange-100 cursor-pointer hover:scale-[1.02] duration-500">
-    <h3>服务器信息</h3>
-    <p>服务器CPU架构：{os.cpus()[0].model}</p>
-    <p>服务器CPU核心数：{os.cpus().length}</p>
+<Layout title="">
+  <div class="content">
+     <h1
+        class="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text"
+      >
+        关于
+      </h1>
+    <h3>黄河之水天上来，奔流到海不复回！</h3>
+
+    <div
+      class="rounded-sm p-4 my-4 border-e-gray-400 font-bold text-lg shadow-md shadow-orange-100 cursor-pointer hover:scale-[1.02] duration-500"
+    >
+      <h3>内存信息</h3>
+      <p>内存使用率：{getMemInfo().usage}%</p>
+    </div>
+    <div
+      class="rounded-sm p-4 my-4 border-e-gray-400 font-bold text-lg shadow-md shadow-orange-100 cursor-pointer hover:scale-[1.02] duration-500"
+    >
+      <h3>CPU信息</h3>
+      <p>CPU核心数：{getCpuInfo().cpuNum}</p>
+      <p>CPU使用率：{getCpuInfo().used}%</p>
+      <p>CPU空闲率：{getCpuInfo().free}%</p>
+      <p>CPU系统使用率：{getCpuInfo().sys}%</p>
+    </div>
+    <div
+      class="rounded-sm p-4 my-4 border-e-gray-400 font-bold text-lg shadow-md shadow-orange-100 cursor-pointer hover:scale-[1.02] duration-500"
+    >
+      <h3>服务器信息</h3>
+      <p>服务器CPU架构：{os.cpus()[0].model}</p>
+      <p>服务器CPU核心数：{os.cpus().length}</p>
+    </div>
   </div>
 </Layout>
+
+<style>
+  .content {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px 30px;
+    border-radius: 20px;
+    transition: background-color 0.5s;
+  }
+
+  html.dark .content {
+    background-color: rgba(24, 24, 27, 0.95);
+    /* 深色主题下更深的背景色 */
+    transition: background-color 0.5s;
+  }
+</style>

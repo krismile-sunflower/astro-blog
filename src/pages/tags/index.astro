@@ -1,17 +1,44 @@
 ---
 import BaseLayout from "../../layouts/Layout.astro";
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 const pageTitle = "标签";
-const allPosts = await getCollection('posts');
+const allPosts = await getCollection("posts");
 const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
-
 ---
 
 <BaseLayout title={pageTitle}>
   <!-- <h1>{pageTitle}</h1> -->
- <div class="flex flex-wrap">
-    {tags.map((tag) => (
-        <p class=" px-5 py-2 mr-5 bg-slate-100 rounded-md hover:scale-110 transition-transform shadow-md shadow-orange-100"><a href={`/tags/${tag}`} class=" text-blue-400">{tag}</a></p>
-      ))}
- </div>
+  <div class="content">
+    <h1
+      class="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text"
+    >
+      {pageTitle}
+    </h1>
+    <div class="flex flex-wrap">
+      {
+        tags.map((tag) => (
+          <p class=" px-5 py-2 mr-5 bg-slate-100 rounded-md hover:scale-110 transition-transform shadow-md shadow-orange-100">
+            <a href={`/tags/${tag}`} class=" text-blue-400">
+              {tag}
+            </a>
+          </p>
+        ))
+      }
+    </div>
+  </div>
 </BaseLayout>
+
+<style>
+  .content {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px 30px;
+    border-radius: 20px;
+    transition: background-color 0.5s;
+  }
+
+  html.dark .content {
+    background-color: rgba(24, 24, 27, 0.95);
+    /* 深色主题下更深的背景色 */
+    transition: background-color 0.5s;
+  }
+</style>

@@ -18,13 +18,9 @@ body {
 }
 
 a {
-    color: theme('colors.primary.600');
     text-decoration: none; /* Optional: remove underline */
 }
 
-a:hover {
-    text-decoration: underline; /* Optional: add underline on hover */
-}
 
 
 /* * {
@@ -98,12 +94,10 @@ html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark 
 }
 
 html.dark p, html.dark li, html.dark pre {
-    color: theme('colors.darktext'); /* Ensure paragraphs and lists use darktext */
     transition: color 0.5s;
 }
 
 html.dark a {
-    color: theme('colors.primary.400');
     transition: color 0.5s;
 }
 

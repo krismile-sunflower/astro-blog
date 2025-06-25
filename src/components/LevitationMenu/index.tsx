@@ -90,10 +90,10 @@ export default function LevitationMenu() {
                 {/* Inner Content Div: Changed bg, width, height (via padding). Added dark mode styles. */}
                 <div className={cn("flex flex-col w-32 py-2 text-sm p-2 animate-wiggle bg-neutralbg dark:bg-darkbg fixed bottom-20 right-2 rounded-md shadow-xl")}>
                     {/* Menu Links: Added base classes and cursor-pointer. JS will toggle selected state. */}
-                    <p v-data="/" class="mb-2 text-center text-neutraltext dark:text-darktext hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer no-underline">首页</p>
-                    <p v-data="/blog" class="mb-2 text-center text-neutraltext dark:text-darktext hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer no-underline">博客</p>
-                    <p v-data="/tags" class="mb-2 text-center text-neutraltext dark:text-darktext hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer no-underline">标签</p>
-                    <p v-data="/about" class="mb-2 text-center text-neutraltext dark:text-darktext hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer no-underline">关于</p>
+                    <p v-data="/" class="mb-2 text-center text-neutraltext dark:text-darktext cursor-pointer">首页</p>
+                    <p v-data="/blog" class="mb-2 text-center text-neutraltext dark:text-darktext cursor-pointer">博客</p>
+                    <p v-data="/tags" class="mb-2 text-center text-neutraltext dark:text-darktextcursor-pointer">标签</p>
+                    <p v-data="/about" class="mb-2 text-center text-neutraltext dark:text-darktext cursor-pointer">关于</p>
                 </div>
                 {/* This div is for closing the menu when clicking outside the content area */}
                 <div className={"flex-grow h-full"} onClick={() => close()}></div>

@@ -6,35 +6,95 @@ import { getCollection } from "astro:content";
 const allPosts = await getCollection("posts");
 
 function formatDate(dateString: string) {
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Intl.DateTimeFormat('zh-CN', options).format(new Date(dateString));
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return new Intl.DateTimeFormat("zh-CN", options).format(new Date(dateString));
 }
-
 ---
 
-<Layout title="往事回顾~">
-  <ul>
-    {
-      allPosts.map((post) => (
-        <li class="block sm:flex sm:gap-2 my-[15px] px-5 py-2 rounded-md shadow-md shadow-slate-50">
-          <a  href={"/posts/" + post.slug}><img
-            src={post.data.image.url}
-            alt={post.data.title}
-            class="w-[400px] h-[200px] rounded-md hover:scale-105 transition-transform duration-500"
-           /></a>
-          <div class="flex flex-col gap-2">
-            <a href={"/posts/" + post.slug}>
-              <span class="text-xl font-bold">{post.data.title}</span>
-            </a>
-            <p class="text-sm">{formatDate(post.data.pubDate.toString())}</p>
-            <p class="">{post.data.description}</p>
-            <p class="hidden sm:block"> {post.data.tags.map((tag) => {
-              return <span class="text-sm bg-slate-200 px-2 py-1 rounded-md mr-3 text-blue-300">{tag}</span>
-            })} </p>
-           
-          </div>
-        </li>
-      ))
-    }
-  </ul>
+<Layout title="">
+  <div
+    class="min-h-screen bg-gradient-to-br py-8 px-4 text-white content"
+  >
+    <div class="max-w-6xl mx-auto">
+      <h1
+        class="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text"
+      >
+        往事回顾
+      </h1>
+      <ul class="space-y-8"></ul>
+      {
+        allPosts.map((post) => (
+          <li class="grou rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100 cursor-pointer">
+            <div class="block lg:flex">
+              <div class="lg:w-2/5 relative overflow-hidden">
+                <a href={"/posts/" + post.slug}>
+                  <img
+                    src={post.data.image.url}
+                    alt={post.data.title}
+                    class="w-full h-64 lg:h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </a>
+              </div>
+              <div class="lg:w-3/5 p-6 lg:p-8 flex flex-col justify-between">
+                <div>
+                  <a
+                    href={"/posts/" + post.slug}
+                    class="block group-hover:text-blue-600 transition-colors duration-300"
+                  >
+                    <h2 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-3 line-clamp-2 leading-tight">
+                      {post.data.title}
+                    </h2>
+                  </a>
+                  <p class="text-sm text-white mb-4 flex items-center">
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    {formatDate(post.data.pubDate.toString())}
+                  </p>
+                  <p class="text-white leading-relaxed mb-6 line-clamp-3">
+                    {post.data.description}
+                  </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  {post.data.tags.map((tag) => (
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 hover:from-blue-200 hover:to-purple-200 transition-colors duration-200">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </div>
+  </div>
 </Layout>
+
+<style>
+  .content {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px 30px;
+    border-radius: 20px;
+    transition: background-color 0.5s;
+  }
+
+  html.dark .content {
+    background-color: rgba(24, 24, 27, 0.95);
+    /* 深色主题下更深的背景色 */
+    transition: background-color 0.5s;
+  }
+</style>
