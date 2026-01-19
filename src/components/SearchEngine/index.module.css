@@ -1,58 +1,137 @@
 .input {
-    border: 1px solid theme('colors.neutral.300'); /* Added border */
-    border-radius: 5px;
-    padding: 10px 5px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
     inset-inline: 0;
-    /* color: black; Removed, should inherit */
     outline: none;
-    background-color: theme('colors.neutralbg'); /* Match global bg for light mode */
+    background: rgba(11, 11, 16, 0.6);
+    backdrop-filter: blur(20px) saturate(180%);
+    color: theme('colors.gray.200');
+    font-family: theme('fontFamily.body');
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .input:focus {
-    border-color: theme('colors.primary.500');
-    outline: none;
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(59, 130, 246, 0.2),
+        inset 0 0 10px rgba(59, 130, 246, 0.05);
+}
+
+.input::placeholder {
+    color: theme('colors.gray.400');
 }
 
 html.dark .input {
-    border-color: theme('colors.neutral.600');
-    background-color: theme('colors.neutral.700'); /* Darker bg for input in dark mode */
-    color: theme('colors.darktext'); /* Ensure text color is correct in dark mode */
+    background: rgba(0, 0, 0, 0.7);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: theme('colors.gray.200');
 }
 
 html.dark .input:focus {
-    border-color: theme('colors.primary.400');
+    border-color: rgba(59, 130, 246, 0.7);
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(59, 130, 246, 0.3),
+        inset 0 0 15px rgba(59, 130, 246, 0.1);
 }
 
 .button {
-    padding: 10px 20px;
-    margin-left: 10px;
-    border-radius: 10px;
-    background-color: theme('colors.secondary.500'); /* Changed background */
-    color: white; /* Added text color */
-    border: none; /* Ensured no border */
-    transition: background-color 0.2s ease-in-out; /* Added transition */
+    padding: 12px 24px;
+    margin-left: 12px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    color: white;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    font-family: theme('fontFamily.heading');
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 4px 15px rgba(59, 130, 246, 0.3),
+        inset 0 0 10px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.button:hover::before {
+    left: 100%;
 }
 
 .button:hover {
-    background-color: theme('colors.secondary.600'); /* Added hover state */
+    background: linear-gradient(135deg, #2563EB, #7C3AED);
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow:
+        0 6px 25px rgba(59, 130, 246, 0.5),
+        0 0 30px rgba(139, 92, 246, 0.3),
+        inset 0 0 15px rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(0);
 }
 
 .box {
     display: flex;
-    gap: 3; /* Consider using theme.spacing if Tailwind processes this */
+    gap: 16px;
     justify-content: center;
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(11, 11, 16, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+html.dark .box {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.item {
+    position: relative;
+    padding: 8px;
+    border-radius: 8px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.item:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
 }
 
 .img {
-    width: 25px;
-    height: 25px;
-    margin-right: 20px; /* Consider theme.spacing */
-    margin-top: 10px; /* Consider theme.spacing */
+    width: 30px;
+    height: 30px;
+    display: block;
     cursor: pointer;
-    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out; /* Added transition */
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .img:hover {
-    opacity: 0.7; /* Added hover effect */
-    transform: scale(1.1); /* Added hover effect */
+    transform: scale(1.15) rotate(5deg);
+    filter:
+        drop-shadow(0 4px 8px rgba(59, 130, 246, 0.4))
+        brightness(1.2);
 }

@@ -1,18 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap');
+
 html {
-    /* font-family: 'Kalam', cursive; */
     color: theme('colors.neutraltext');
     background-color: theme('colors.neutralbg');
     font-size: 16px;
-    background-image: url('/bg03.jpg');
+    /* 科技感深色背景 */
+    background: linear-gradient(135deg,
+        #0B0B10 0%,
+        #1a1a2e 25%,
+        #16213e 50%,
+        #0f0f23 75%,
+        #1a1a3e 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* 背景渐变动画 */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 body {
     width: 100%;
+    height: 100%;
     font-family: theme('fontFamily.sans');
     line-height: 1.6;
+    overflow-x: hidden;
     overflow-y: auto;
-    min-height: 100vh;
-    background: none;
+    background: transparent;
     padding: 0;
     margin: 0;
 }
@@ -78,11 +97,170 @@ pre {
     padding: 0.5rem 1rem;
 }
 
-/* 暗色模式 */
+/* 暗色模式 - 赛博朋克深色渐变 */
 html.dark {
     color: theme('colors.darktext');
-    background-image: url('/bg00.jpg');
+    background: linear-gradient(135deg,
+        #050508 0%,
+        #0a0a12 25%,
+        #0f0f1e 50%,
+        #0a0a14 75%,
+        #050508 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
     background-color: theme('colors.darkbg');
+}
+
+/* 增强的科技感玻璃拟态效果 */
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.37),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 霓虹灯边框效果 */
+.glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(59, 130, 246, 0.2),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.glass:hover::before {
+    left: 100%;
+}
+
+html.dark .glass {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(59, 130, 246, 0.1),
+        inset 0 0 0 1px rgba(59, 130, 246, 0.05);
+}
+
+/* 霓虹灯文字效果 */
+.neon-text {
+    text-shadow:
+        0 0 7px rgba(59, 130, 246, 0.8),
+        0 0 10px rgba(59, 130, 246, 0.5),
+        0 0 21px rgba(59, 130, 246, 0.3),
+        0 0 42px rgba(59, 130, 246, 0.3);
+}
+
+/* 赛博朋克边框 */
+.cyber-border {
+    border: 1px solid transparent;
+    background: linear-gradient(rgba(11, 11, 16, 0.8), rgba(11, 11, 16, 0.8)) padding-box,
+                linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899) border-box;
+}
+
+/* 网格背景 */
+.grid-bg {
+    background-image:
+        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+/* 扫描线效果 */
+.scan-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(59, 130, 246, 0.5),
+        transparent
+    );
+    animation: scanLine 3s linear infinite;
+}
+
+@keyframes scanLine {
+    0% { top: 0; }
+    100% { top: 100%; }
+}
+
+/* 渐变文字 */
+.gradient-text {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradientText 3s ease infinite;
+}
+
+@keyframes gradientText {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 脉冲光晕效果 */
+.pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(59, 130, 246, 0.8),
+                    0 0 60px rgba(139, 92, 246, 0.4);
+    }
+}
+
+/* 悬浮动画 */
+.float-animation {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 平滑过渡动画 */
+* {
+    transition: background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease,
+                transform 0.3s ease;
+}
+
+/* 尊重用户动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 /* html.dark body rule is removed as color is inherited and bg image removed */
@@ -108,8 +286,13 @@ html.dark .prose {
 @media (prefers-color-scheme: dark) {
   html:not([data-theme]):not(.light):not(.dark) {
     color: theme('colors.darktext');
+    background: linear-gradient(135deg,
+        #0f0c29 0%,
+        #302b63 50%,
+        #24243e 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
     background-color: theme('colors.darkbg');
-    background-image: url('/bg00.jpg');
   }
   /* body rule under this media query can be removed if settings are on html */
   html:not([data-theme]):not(.light):not(.dark) h1,
@@ -118,13 +301,13 @@ html.dark .prose {
   html:not([data-theme]):not(.light):not(.dark) h4,
   html:not([data-theme]):not(.light):not(.dark) h5,
   html:not([data-theme]):not(.light):not(.dark) h6 {
-    color: theme('colors.darktext'); /* Ensure headings also use darktext */
+    color: theme('colors.darktext');
     text-shadow: 0 2px 8px #000a;
   }
   html:not([data-theme]):not(.light):not(.dark) p,
   html:not([data-theme]):not(.light):not(.dark) li,
   html:not([data-theme]):not(.light):not(.dark) pre {
-    color: theme('colors.darktext'); /* Ensure paragraphs and lists use darktext */
+    color: theme('colors.darktext');
   }
   html:not([data-theme]):not(.light):not(.dark) a {
     color: theme('colors.primary.400');

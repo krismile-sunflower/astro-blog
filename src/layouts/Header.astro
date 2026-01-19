@@ -6,18 +6,72 @@ const { pathname } = Astro.locals;
 
 <style>
   header {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    color: #000;
-    font-weight: bold;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 100;
+    animation: slideDown 0.5s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .nav-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 霓虹灯顶部边框 */
+  .nav-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3B82F6, #8B5CF6, #EC4899, transparent);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  .back-btn {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .back-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3B82F6, #8B5CF6);
+    transition: width 0.3s ease;
+  }
+
+  .back-btn:hover::after {
+    width: 100%;
   }
 </style>
 
 <header class="w-full">
-  <nav class="flex items-center justify-between w-full px-5 sm:px-20" >
-      <div class="text-white sm:hidden">krismile🥤</div>
-      <div class="hidden sm:flex text-teal-200 text-sm cursor-pointer" id="back" onclick="window.history.back()"> {pathname === '/' ? "" : "返 回"}</div>
+  <nav class="glass cyber-border rounded-2xl px-6 py-4 flex items-center justify-between nav-container">
+      <div class="text-white font-heading font-bold text-lg sm:hidden neon-text">krismile🥤</div>
+      <div class="back-btn hidden sm:block font-tech text-blue-400 text-sm cursor-pointer hover:text-blue-300 transition-colors" id="back" onclick="window.history.back()"> {pathname === '/' ? "" : "返 回"}</div>
       <ThemeToggle client:load />
   </nav>
 </header>

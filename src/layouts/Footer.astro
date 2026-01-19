@@ -7,13 +7,36 @@
     display: flex;
     width: 100%;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin: 2rem 1rem 1rem 1rem;
     align-items: center;
     justify-content: center;
+    position: relative;
+  }
+
+  .footer-content {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 底部霓虹灯边框 */
+  .footer-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3B82F6, #8B5CF6, #EC4899, transparent);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
   }
 </style>
 <footer>
-  <div class="">
-    <p>Learn more {new Date().getFullYear()}@krismile🥤</p>
+  <div class="glass cyber-border rounded-xl px-8 py-4 footer-content">
+    <p class="text-gray-300 dark:text-gray-200 font-body font-medium">Learn more <span class="font-tech text-blue-400">{new Date().getFullYear()}</span>@krismile🥤</p>
   </div>
 </footer>

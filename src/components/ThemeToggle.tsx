@@ -77,11 +77,42 @@ export default function ThemeToggle() {
     <div className="flex items-center gap-2">
       <button
         onClick={toggleTheme}
-        className="transition-colors duration-500 rounded-full p-2 text-2xl bg-white/70 dark:bg-black/70 shadow hover:scale-110"
+        className="relative group transition-all duration-500 rounded-full p-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-500/30 dark:to-purple-500/30 border border-blue-400/30 dark:border-blue-400/50 shadow-lg hover:shadow-cyan-500/50 hover:scale-110 hover:border-blue-400/60"
         aria-label="切换主题"
         title="切换主题"
       >
-        {theme === "dark" ? "🌞" : "🌙"}
+        {/* 太阳图标 - 浅色模式 */}
+        <svg
+          className={`w-6 h-6 transition-all duration-500 ${theme === "dark" ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-yellow-400`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+          />
+        </svg>
+
+        {/* 月亮图标 - 深色模式 */}
+        <svg
+          className={`w-6 h-6 transition-all duration-500 ${theme === "dark" ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-0"} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-blue-300`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+          />
+        </svg>
+
+        {/* 发光效果 */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md"></div>
       </button>
     </div>
   );

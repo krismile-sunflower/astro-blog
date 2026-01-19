@@ -8,54 +8,114 @@ interface Props {
 const { href, title, body } = Astro.props;
 ---
 
-<li class="link-card">
-	<a href={href}>
-		<h2>
-			{title}
-			<span>&rarr;</span>
-		</h2>
-		<p>
-			{body}
-		</p>
+<li class="link-card glass cyber-border rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 group">
+	<a href={href} class="block h-full">
+		<div class="p-6 relative">
+			<!-- 装饰性科技元素 -->
+			<div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+			<div class="absolute top-2 right-6 w-1 h-1 rounded-full bg-purple-500 animate-pulse" style="animation-delay: 0.5s"></div>
+
+			<h2 class="text-2xl font-heading font-bold gradient-text mb-3 relative">
+				{title}
+				<span class="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1 text-blue-400">&rarr;</span>
+			</h2>
+			<p class="text-gray-300 dark:text-gray-200 line-clamp-2 font-body">
+				{body}
+			</p>
+
+			<!-- 底部装饰线 -->
+			<div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-300 group-hover:w-full"></div>
+		</div>
 	</a>
 </li>
+
 <style>
 	.link-card {
 		list-style: none;
 		display: flex;
-		padding: 1px;
-		background-color: #23262d;
-		background-image: none;
-		background-size: 400%;
-		border-radius: 7px;
-		background-position: 100%;
-		transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+		background: rgba(11, 11, 16, 0.6);
+		backdrop-filter: blur(20px) saturate(180%);
+		border: 1px solid rgba(59, 130, 246, 0.2);
+		box-shadow:
+			0 8px 32px 0 rgba(0, 0, 0, 0.37),
+			inset 0 0 0 1px rgba(59, 130, 246, 0.05);
+		transition: all 0.3s ease;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
 	}
+
+	/* 霓虹灯边框扫描效果 */
+	.link-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+		transition: left 0.6s ease;
+	}
+
+	.link-card:hover::before {
+		left: 100%;
+	}
+
+	/* 霓虹灯发光效果 */
+	.link-card::after {
+		content: '';
+		position: absolute;
+		inset: -2px;
+		background: linear-gradient(45deg, #3B82F6, #8B5CF6, #EC4899, #3B82F6);
+		background-size: 400% 400%;
+		animation: borderGlow 8s ease infinite;
+		border-radius: inherit;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		z-index: -1;
+		filter: blur(8px);
+	}
+
+	.link-card:hover::after {
+		opacity: 0.6;
+	}
+
+	@keyframes borderGlow {
+		0% { background-position: 0% 50%; }
+		50% { background-position: 100% 50%; }
+		100% { background-position: 0% 50%; }
+	}
+
 	.link-card > a {
 		width: 100%;
 		text-decoration: none;
-		line-height: 1.4;
-		padding: calc(1.5rem - 1px);
-		border-radius: 8px;
-		color: white;
-		background-color: #23262d;
-		opacity: 0.8;
+		color: inherit;
+		display: flex;
+		flex-direction: column;
 	}
-	h2 {
-		margin: 0;
-		font-size: 1.25rem;
-		transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+	.link-card:hover {
+		background: rgba(11, 11, 16, 0.8);
+		border-color: rgba(59, 130, 246, 0.4);
+		box-shadow:
+			0 12px 40px 0 rgba(0, 0, 0, 0.5),
+			0 0 20px rgba(59, 130, 246, 0.2);
+		transform: translateY(-4px) scale(1.02);
 	}
-	p {
-		margin-top: 0.5rem;
-		margin-bottom: 0;
+
+	:global(html.dark) .link-card {
+		background: rgba(0, 0, 0, 0.4);
+		border: 1px solid rgba(59, 130, 246, 0.2);
+		box-shadow:
+			0 8px 32px 0 rgba(0, 0, 0, 0.5),
+			0 0 10px rgba(59, 130, 246, 0.05);
 	}
-	.link-card:is(:hover, :focus-within) {
-		background-position: 0;
-		background-image: var(--accent-gradient);
-	}
-	.link-card:is(:hover, :focus-within) h2 {
-		color: rgb(var(--accent-light));
+
+	:global(html.dark) .link-card:hover {
+		background: rgba(0, 0, 0, 0.6);
+		border-color: rgba(59, 130, 246, 0.4);
+		box-shadow:
+			0 12px 40px 0 rgba(0, 0, 0, 0.6),
+			0 0 30px rgba(59, 130, 246, 0.3);
 	}
 </style>

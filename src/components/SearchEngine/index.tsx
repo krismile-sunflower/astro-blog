@@ -60,13 +60,13 @@ const Index = () => {
         if (value) {
             window.open(data.url + value);
         }
-        
+
     }
     return (
         <div className={'w-full sm:mx-[100px]'}>
             <div className={'flex justify-center items-center'}>
-                <input className={cn(css.input, 'w-full')} ref={ref}
-                    placeholder={'正在使用' + data.name + '搜索引'}
+                <input className={cn(css.input, 'w-full font-body')} ref={ref}
+                    placeholder={'正在使用 ' + data.name + ' 搜索'}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             submit();

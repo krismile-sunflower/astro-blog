@@ -31,23 +31,27 @@ const { title } = Astro.props;
     <ViewTransitions />
   </head>
   <body>
+    <div class="flex flex-col min-h-screen">
+      <Header />
+      <div class="flex-grow">
+        <div class="glass cyber-border rounded-2xl mx-4 sm:mx-8 md:mx-16 lg:mx-32 xl:mx-48 mt-24 mb-8 p-8 relative overflow-hidden">
+          <!-- 背景网格装饰 -->
+          <div class="absolute inset-0 grid-bg opacity-20 pointer-events-none"></div>
 
-    <div class="flex flex-col h-screen justify-between">
-      <div>
-        <Header />
-        <div id="content" class="mx-4 sm:mx-8 md:mx-16 lg:mx-32 xl:mx-48">
-          <h1 class="mt-8">{title}</h1>
-          <div class="prose prose-sm dark:prose-invert max-w-none mt-6">
-            <slot />
+          <!-- 标题区域 -->
+          <div class="relative z-10">
+            <h1 class="font-heading text-4xl md:text-5xl font-bold mb-6 gradient-text neon-text">{title}</h1>
+            <div class="prose prose-lg dark:prose-invert max-w-none font-body">
+              <slot />
+            </div>
           </div>
         </div>
       </div>
-      <div class="fixed bottom-10 right-0">
+      <div class="fixed bottom-10 right-0 z-50">
         <LevitationMenu client:load />
       </div>
       <Footer />
     </div>
-    <!-- <Click client:only="preact" /> -->
     <script>
       import "../scripts/click-effect.js"
       if ("serviceWorker" in navigator) {
