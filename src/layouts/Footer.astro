@@ -1,42 +1,58 @@
 ---
-
+const year = new Date().getFullYear();
+const buildHash = Math.random().toString(36).slice(2, 9);
 ---
 
-<style>
-  footer {
-    display: flex;
-    width: 100%;
-    gap: 1rem;
-    margin: 2rem 1rem 1rem 1rem;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
-  .footer-content {
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* 底部霓虹灯边框 */
-  .footer-content::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #3B82F6, #8B5CF6, #EC4899, transparent);
-    animation: shimmer 3s ease-in-out infinite;
-  }
-
-  @keyframes shimmer {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-  }
-</style>
-<footer>
-  <div class="glass cyber-border rounded-xl px-8 py-4 footer-content">
-    <p class="text-gray-300 dark:text-gray-200 font-body font-medium">Learn more <span class="font-tech text-blue-400">{new Date().getFullYear()}</span>@krismile🥤</p>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="cell left">
+      <span class="dot" aria-hidden="true"></span>
+      <span>signal · ready</span>
+    </div>
+    <div class="cell center">
+      <span class="muted">— © {year} krismile —</span>
+    </div>
+    <div class="cell right">
+      <a href="/rss.xml" class="link">rss</a>
+      <span class="sep">·</span>
+      <a href="https://github.com" class="link" target="_blank" rel="noopener">src</a>
+      <span class="sep">·</span>
+      <span class="muted">build {buildHash}</span>
+    </div>
   </div>
 </footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg);
+  }
+  .footer-inner {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+  .cell { display: flex; align-items: center; gap: 0.5rem; }
+  .cell.center { display: none; }
+  @media (min-width: 768px) {
+    .cell.center { display: flex; }
+  }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent-dim);
+  }
+  .muted { color: var(--text-muted); }
+  .link {
+    color: var(--text-secondary);
+    transition: color 150ms ease;
+  }
+  .link:hover { color: var(--accent); }
+  .sep { color: var(--text-faint); }
+</style>

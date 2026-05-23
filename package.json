@@ -29,6 +29,8 @@
     "typescript": "^5.5.3"
   },
   "devDependencies": {
+    "astro-pagefind": "^2.0.0",
+    "pagefind": "^1.5.2",
     "shiki": "^1.12.1"
   }
 }

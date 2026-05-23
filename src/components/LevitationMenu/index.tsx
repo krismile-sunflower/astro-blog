@@ -1,103 +1,144 @@
-import { cn } from "@utils/style";
-import { useRef, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
+
+const items = [
+  { label: "home",  href: "/" },
+  { label: "blog",  href: "/blog" },
+  { label: "tags",  href: "/tags" },
+  { label: "about", href: "/about" },
+];
 
 export default function LevitationMenu() {
-    const [menuText, setMenuText] = useState<string>('+');
-    const [currentLink, setCurrentLink] = useState<string>("/");
-    const menuRef = useRef<HTMLDivElement>(null);
-    const currentUrl = () => {
-        if (typeof window !== "undefined") {
-            return window.location.pathname
-        }
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState<string>("/");
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") setCurrent(window.location.pathname);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
     };
-    const toNav = (e: string) => {
-        setCurrentLink(e);
-        document.documentElement.classList.remove("animate-bg");
-        const aTag = document.createElement("a");
-        aTag.href = e; // 设置跳转的 URL
-        aTag.textContent = "Go"; // 设置链接文本，可根据需要调整
-        aTag.style.display = "none"; // 隐藏这个 <a> 标签，因为我们不需要显示它
-        // 将 <a> 标签添加到 body 中（或其他元素中）
-        document.body.appendChild(aTag);
-        // 模拟点击 <a> 标签进行跳转
-        aTag.click();
-        // 可选：之后从 DOM 中移除这个 <a> 标签
-        document.body.removeChild(aTag);
-    };
-    const handleClick = () => {
-        setMenuText('x');
-        const menuElement = menuRef.current;
-        if (menuElement) {
-            menuElement.classList.remove("hidden"); // Use remove instead of toggle if we always want to show on click
-            menuElement.classList.add(
-                "flex",
-                "absolute",
-                "top-0",
-                "left-0",
-                "w-full",
-                "h-screen",
-                "z-10",
-                "shadow-lg",
-                "bg-black/50" // Added semi-transparent overlay
-            );
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
-            const links = menuElement.querySelectorAll("p[v-data]"); // More specific selector
-            links.forEach((link) => {
-                // Remove potentially existing color/font weight classes to reset state
-                link.classList.remove("text-yellow-500", "text-white", "font-bold", "text-secondary-500", "dark:text-secondary-400");
+  return (
+    <>
+      <button
+        class={`fab ${open ? "fab-open" : ""}`}
+        onClick={() => setOpen((o) => !o)}
+        aria-label={open ? "close menu" : "open menu"}
+        aria-expanded={open}
+      >
+        <span class="fab-bracket">[</span>
+        <span class="fab-char">{open ? "x" : "+"}</span>
+        <span class="fab-bracket">]</span>
+      </button>
 
-                const isSelect =  link.getAttribute("v-data") === currentUrl();
-                if (isSelect) {
-                    link.classList.add("text-secondary-500", "dark:text-secondary-400", "font-bold");
-                }
-                // Base classes are now applied directly in JSX: text-neutraltext dark:text-darktext etc.
-                // link.style.textDecoration = "none"; // This should be handled by Tailwind classes if needed e.g. `no-underline`
-
-                // Ensure event listeners are not duplicated if handleClick can be called multiple times
-                // A simple way is to replace the element or manage listeners carefully.
-                // For now, assuming this click handler setup is okay.
-                link.addEventListener("click", () => {
-                    const vData = link.getAttribute("v-data");
-                    toNav(vData ?? "/");
-                    menuElement.classList.add("hidden");
-                });
-                // 可以添加更多样式
-            });
-        }
-    };
-
-    const close = () => {
-        setMenuText('+');
-        const menuElement = menuRef.current;
-        if (menuElement) {
-            menuElement.classList.add("hidden");
-        }
-    };
-
-    return (
+      {open && (
         <>
-            <button
-                onClick={handleClick}
-                class={cn("mr-4", "block sm:hidden")} // Ensure no extra spaces if not needed
-            >
-                {/* Trigger button: Changed bg, text color, padding. Removed inner p. */}
-                <div className={"flex flex-col bg-primary-500 text-white font-bold rounded-md px-3 py-2"}>
-                    {menuText}
-                </div>
-            </button>
-
-            <div className={"hidden"} id="menu" ref={menuRef}>
-                {/* Inner Content Div: Changed bg, width, height (via padding). Added dark mode styles. */}
-                <div className={cn("flex flex-col w-32 py-2 text-sm p-2 animate-wiggle bg-neutralbg dark:bg-darkbg fixed bottom-20 right-2 rounded-md shadow-xl")}>
-                    {/* Menu Links: Added base classes and cursor-pointer. JS will toggle selected state. */}
-                    <p v-data="/" class="mb-2 text-center text-neutraltext dark:text-darktext cursor-pointer">首页</p>
-                    <p v-data="/blog" class="mb-2 text-center text-neutraltext dark:text-darktext cursor-pointer">博客</p>
-                    <p v-data="/tags" class="mb-2 text-center text-neutraltext dark:text-darktextcursor-pointer">标签</p>
-                    <p v-data="/about" class="mb-2 text-center text-neutraltext dark:text-darktext cursor-pointer">关于</p>
-                </div>
-                {/* This div is for closing the menu when clicking outside the content area */}
-                <div className={"flex-grow h-full"} onClick={() => close()}></div>
+          <div class="backdrop" onClick={() => setOpen(false)} />
+          <div class="panel" ref={panelRef}>
+            <div class="panel-title">
+              <span class="prompt">$</span> cd
             </div>
+            <ul class="panel-list">
+              {items.map((it) => (
+                <li>
+                  <a
+                    href={it.href}
+                    class={`panel-link ${current === it.href ? "active" : ""}`}
+                  >
+                    <span class="bracket">[</span>
+                    <span class="label">{it.label}</span>
+                    <span class="bracket">]</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </>
-    );
+      )}
+
+      <style>{`
+        .fab {
+          font-family: inherit;
+          background: var(--surface);
+          color: var(--accent);
+          border: 1px solid var(--border-default);
+          border-radius: 2px;
+          padding: 0.5rem 0.875rem;
+          font-size: 1rem;
+          cursor: pointer;
+          letter-spacing: 0.05em;
+          transition: border-color 150ms ease, background 150ms ease;
+        }
+        .fab:hover, .fab-open {
+          border-color: var(--accent-dim);
+          background: var(--elevated);
+        }
+        .fab-bracket { color: var(--text-faint); }
+        .fab-open .fab-bracket { color: var(--accent-dim); }
+        .fab-char { margin: 0 0.125rem; }
+
+        .backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.4);
+          z-index: 40;
+        }
+        .panel {
+          position: fixed;
+          right: 1rem;
+          bottom: 4.5rem;
+          z-index: 50;
+          min-width: 12rem;
+          background: var(--surface);
+          border: 1px solid var(--border-default);
+          border-radius: 4px;
+          padding: 0.5rem 0;
+          animation: panel-in 150ms ease-out;
+        }
+        @keyframes panel-in {
+          from { opacity: 0; transform: translateY(4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .panel-title {
+          padding: 0.375rem 0.875rem 0.5rem;
+          font-size: 0.8125rem;
+          color: var(--text-muted);
+          border-bottom: 1px dashed var(--border-subtle);
+        }
+        .prompt { color: var(--accent); margin-right: 0.375rem; }
+
+        .panel-list {
+          list-style: none;
+          margin: 0;
+          padding: 0.5rem 0 0;
+        }
+        .panel-list li { margin: 0; }
+        .panel-link {
+          display: block;
+          padding: 0.5rem 0.875rem;
+          font-size: 0.9375rem;
+          color: var(--text-secondary);
+          transition: color 120ms ease, background 120ms ease;
+        }
+        .panel-link:hover {
+          color: var(--accent);
+          background: var(--elevated);
+        }
+        .panel-link.active {
+          color: var(--accent);
+        }
+        .panel-link .bracket { color: var(--text-faint); }
+        .panel-link:hover .bracket,
+        .panel-link.active .bracket { color: var(--accent-dim); }
+        .panel-link .label { margin: 0 0.25rem; }
+      `}</style>
+    </>
+  );
 }

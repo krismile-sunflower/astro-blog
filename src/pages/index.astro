@@ -1,10 +1,251 @@
 ---
-import Home from '@components/Home/Index';
-import Layout from '@layouts/Layout.astro';
-export const prerender = false
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+export const prerender = false;
+
+const allPosts = (await getCollection("posts")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const recent = allPosts.slice(0, 5);
+
+function pad(n: number, w = 2) {
+  return n.toString().padStart(w, "0");
+}
+function fmtDate(d: Date) {
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+function size(s: string) {
+  return pad(Math.min(99, Math.max(1, s.length)), 2);
+}
+
+const commands = [
+  { label: "home",  href: "/" },
+  { label: "blog",  href: "/blog" },
+  { label: "tags",  href: "/tags" },
+  { label: "about", href: "/about" },
+];
 ---
 
 <Layout title="">
-	<Home client:load />
+  <section class="home">
+    <!-- whoami -->
+    <div class="block">
+      <div class="cmd"><span class="prompt">$</span> whoami</div>
+      <pre class="out">krismile · programmer
+写代码、读书、偶尔记下来一些片段</pre>
+    </div>
+
+    <!-- now -->
+    <div class="block">
+      <div class="cmd"><span class="prompt">$</span> date</div>
+      <pre class="out" id="clock-line">—</pre>
+    </div>
+
+    <!-- ls posts -->
+    <div class="block">
+      <div class="cmd">
+        <span class="prompt">$</span> ls -lat posts/ <span class="pipe">|</span> head
+      </div>
+      <div class="out posts">
+        <div class="post-row head">
+          <span class="col-perm">perms</span>
+          <span class="col-size">sz</span>
+          <span class="col-date">date</span>
+          <span class="col-name">name</span>
+        </div>
+        {recent.map((p) => (
+          <a
+            href={`/posts/${p.slug}`}
+            class="post-row"
+            data-astro-prefetch
+          >
+            <span class="col-perm">-rw-r--r--</span>
+            <span class="col-size">{size(p.data.title)}k</span>
+            <span class="col-date">{fmtDate(p.data.pubDate)}</span>
+            <span class="col-name">
+              <span class="dot">›</span>
+              {p.data.title}
+              <span class="ext">.md</span>
+            </span>
+          </a>
+        ))}
+        {recent.length === 0 && (
+          <div class="post-row empty">
+            <span class="col-name muted">total 0 · 空荡的目录</span>
+          </div>
+        )}
+      </div>
+      <div class="more">
+        <a href="/blog" data-astro-prefetch class="link">cd posts/ →</a>
+      </div>
+    </div>
+
+    <!-- cd -->
+    <div class="block">
+      <div class="cmd"><span class="prompt">$</span> cd</div>
+      <div class="out chips">
+        {commands.map((c) => (
+          <a class="chip" href={c.href} data-astro-prefetch>{c.label}</a>
+        ))}
+      </div>
+    </div>
+
+    <!-- cursor -->
+    <div class="block">
+      <div class="cmd">
+        <span class="prompt">$</span>
+        <span class="term-cursor"></span>
+      </div>
+    </div>
+  </section>
 </Layout>
 
+<style>
+  .home {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 0;
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cmd {
+    font-size: 1.0625rem;
+    color: var(--text-primary);
+    letter-spacing: 0.005em;
+  }
+  .prompt { color: var(--accent); margin-right: 0.5rem; user-select: none; }
+  .pipe { color: var(--text-faint); margin: 0 0.25rem; }
+
+  .out {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+    padding-left: 1.25rem;
+    margin: 0;
+    font-family: inherit;
+    white-space: pre-wrap;
+  }
+
+  .posts { padding-left: 0; }
+
+  .post-row {
+    display: grid;
+    grid-template-columns: 92px 36px 100px 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    border-left: 2px solid transparent;
+    transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .post-row.head {
+    color: var(--text-faint);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    border-bottom: 1px dashed var(--border-subtle);
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.5rem;
+  }
+  a.post-row:hover {
+    background: var(--surface);
+    border-left-color: var(--accent);
+    color: var(--text-primary);
+  }
+  a.post-row:hover .dot { color: var(--accent); }
+  a.post-row:hover .col-name { color: var(--text-primary); }
+
+  .col-perm { color: var(--text-muted); }
+  .col-size { color: var(--text-faint); text-align: right; }
+  .col-date { color: var(--text-muted); }
+  .col-name { color: var(--text-secondary); }
+  .col-name .dot { color: var(--text-faint); margin-right: 0.375rem; }
+  .col-name .ext { color: var(--text-faint); }
+
+  @media (max-width: 640px) {
+    .post-row {
+      grid-template-columns: 80px 1fr;
+      grid-template-areas:
+        "date name"
+        "perm name";
+      row-gap: 0.125rem;
+    }
+    .post-row.head { display: none; }
+    .col-date { grid-area: date; }
+    .col-name { grid-area: name; }
+    .col-perm { grid-area: perm; font-size: 0.75rem; }
+    .col-size { display: none; }
+  }
+
+  .more {
+    padding-left: 1.25rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+  .link {
+    color: var(--accent);
+    border-bottom: 1px dashed var(--accent-dim);
+  }
+  .link:hover { border-bottom-style: solid; }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-left: 1.25rem;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    border: 1px dashed var(--border-default);
+    border-radius: 2px;
+    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .chip::before {
+    content: "[";
+    color: var(--text-faint);
+    margin-right: 0.125rem;
+  }
+  .chip::after {
+    content: "]";
+    color: var(--text-faint);
+    margin-left: 0.125rem;
+  }
+  .chip:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    background: var(--surface);
+  }
+  .chip:hover::before, .chip:hover::after { color: var(--accent-dim); }
+
+  .muted { color: var(--text-muted); }
+</style>
+
+<script>
+  function fmt() {
+    const d = new Date();
+    const pad = (n: number, w = 2) => n.toString().padStart(w, "0");
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const tz = new Intl.DateTimeFormat("en-US", { timeZoneName: "short" })
+      .formatToParts(d).find(p => p.type === "timeZoneName")?.value ?? "";
+    return `${days[d.getDay()]} ${months[d.getMonth()]} ${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} ${tz} ${d.getFullYear()}`;
+  }
+  function tick() {
+    const el = document.getElementById("clock-line");
+    if (el) el.textContent = fmt();
+  }
+  tick();
+  setInterval(tick, 1000);
+  document.addEventListener("astro:after-swap", tick);
+</script>

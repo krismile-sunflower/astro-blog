@@ -1,77 +1,213 @@
 ---
 import ThemeToggle from "@components/ThemeToggle";
 
+interface Props { cwd?: string }
+const { cwd = "~" } = Astro.props;
 const { pathname } = Astro.locals;
+
+const navItems = [
+  { label: "home",  href: "/",     match: (p: string) => p === "/" },
+  { label: "blog",  href: "/blog", match: (p: string) => p.startsWith("/blog") || p.startsWith("/posts") },
+  { label: "tags",  href: "/tags", match: (p: string) => p.startsWith("/tags") },
+  { label: "about", href: "/about",match: (p: string) => p.startsWith("/about") },
+];
 ---
 
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <span class="dots" aria-hidden="true">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </span>
+      <a href="/" class="brand" data-astro-prefetch>
+        <span class="user">krismile</span><span class="at">@</span><span class="host">blog</span>
+        <span class="sep">:</span>
+        <span class="cwd">{cwd}</span>
+        <span class="sigil">$</span>
+      </a>
+    </div>
+
+    <nav class="header-nav" aria-label="primary">
+      {navItems.map((it) => (
+        <a
+          href={it.href}
+          data-astro-prefetch
+          class:list={["nav-link", { active: it.match(pathname || "/") }]}
+        >{it.label}</a>
+      ))}
+    </nav>
+
+    <div class="header-right">
+      <button
+        type="button"
+        class="search-trigger"
+        aria-label="open search"
+        title="open search"
+        onclick="window.dispatchEvent(new Event('search:open'))"
+      >
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <span class="search-label">search</span>
+        <span class="search-kbd" aria-hidden="true">
+          <kbd>⌘</kbd><kbd>K</kbd>
+        </span>
+      </button>
+      <ThemeToggle client:load />
+    </div>
+  </div>
+</header>
+
 <style>
-  header {
+  .header {
     position: fixed;
-    top: 1rem;
-    left: 1rem;
-    right: 1rem;
-    z-index: 100;
-    animation: slideDown 0.5s ease-out;
-  }
-
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .nav-container {
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* 霓虹灯顶部边框 */
-  .nav-container::before {
-    content: '';
-    position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #3B82F6, #8B5CF6, #EC4899, transparent);
-    animation: shimmer 3s ease-in-out infinite;
+    z-index: 100;
+    background: color-mix(in oklab, var(--bg) 92%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
-  @keyframes shimmer {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
+  .header-inner {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
   }
 
-  .back-btn {
-    position: relative;
+  @media (min-width: 640px) {
+    .header-inner { padding: 0.75rem 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .header-inner { padding: 0.875rem 2.5rem; }
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .dots {
+    display: inline-flex;
+    gap: 0.375rem;
+    flex-shrink: 0;
+  }
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    transition: background 200ms ease;
+  }
+  .header:hover .dot:nth-child(1) { background: #ff5f57; }
+  .header:hover .dot:nth-child(2) { background: #febc2e; }
+  .header:hover .dot:nth-child(3) { background: #28c840; }
+
+  .brand {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .brand:hover { color: var(--text-secondary); }
+  .user  { color: var(--accent); }
+  .at    { color: var(--text-muted); }
+  .host  { color: var(--text-primary); }
+  .sep   { color: var(--text-muted); }
+  .cwd   { color: var(--text-secondary); }
+  .sigil { color: var(--accent); margin-left: 0.375rem; }
+
+  .header-nav {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  @media (min-width: 768px) {
+    .header-nav { display: flex; }
   }
 
-  .back-btn::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #3B82F6, #8B5CF6);
-    transition: width 0.3s ease;
+  .nav-link {
+    display: inline-block;
+    padding: 0.4375rem 0.875rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    border: 1px dashed transparent;
+    border-radius: 2px;
+    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .nav-link:hover {
+    color: var(--text-primary);
+    border-color: var(--border-default);
+  }
+  .nav-link.active {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+  }
+  .nav-link.active::before {
+    content: "› ";
+    color: var(--accent-dim);
   }
 
-  .back-btn:hover::after {
-    width: 100%;
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex-shrink: 0;
+  }
+
+  .search-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.625rem 0.375rem 0.5rem;
+    font: inherit;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px dashed var(--border-default);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .search-trigger:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    background: var(--surface);
+  }
+  .search-icon { font-size: 1rem; line-height: 1; }
+  .search-label { display: none; }
+  @media (min-width: 768px) {
+    .search-label { display: inline; }
+  }
+  .search-kbd {
+    display: none;
+    align-items: center;
+    gap: 1px;
+  }
+  @media (min-width: 768px) {
+    .search-kbd { display: inline-flex; }
+  }
+  .search-kbd kbd {
+    font: inherit;
+    font-size: 0.6875rem;
+    padding: 0 0.25em;
+    border: 1px solid var(--border-default);
+    border-radius: 2px;
+    color: var(--text-faint);
+    background: var(--bg);
+  }
+  .search-trigger:hover .search-kbd kbd {
+    color: var(--accent-dim);
+    border-color: var(--accent-dim);
   }
 </style>
-
-<header class="w-full">
-  <nav class="glass cyber-border rounded-2xl px-6 py-4 flex items-center justify-between nav-container">
-      <div class="text-white font-heading font-bold text-lg sm:hidden neon-text">krismile🥤</div>
-      <div class="back-btn hidden sm:block font-tech text-blue-400 text-sm cursor-pointer hover:text-blue-300 transition-colors" id="back" onclick="window.history.back()"> {pathname === '/' ? "" : "返 回"}</div>
-      <ThemeToggle client:load />
-  </nav>
-</header>

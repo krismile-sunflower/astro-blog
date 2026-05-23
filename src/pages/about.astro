@@ -2,92 +2,200 @@
 import Layout from "../layouts/Layout.astro";
 export const prerender = false;
 import * as os from "os";
+
 const hostName = os.hostname();
+const platform = os.platform();
+const arch = os.arch();
+
 function getMemInfo() {
-  const totalMemory = os.totalmem();
-  const freeMemory = os.freemem();
-  const usedMemory = totalMemory - freeMemory;
-  const memoryUsagePercentage = (
-    ((totalMemory - freeMemory) / totalMemory) *
-    100
-  ).toFixed(2);
-  const mem = {
-    total: totalMemory,
-    used: usedMemory,
-    free: freeMemory,
-    usage: memoryUsagePercentage,
+  const total = os.totalmem();
+  const free = os.freemem();
+  const used = total - free;
+  const usage = ((used / total) * 100).toFixed(1);
+  const gb = (n: number) => (n / 1024 ** 3).toFixed(2);
+  return {
+    total: gb(total),
+    used: gb(used),
+    free: gb(free),
+    usage,
   };
-  return mem;
 }
 
 function getCpuInfo() {
   const cpus = os.cpus();
-  const cpuInfo = cpus.reduce(
-    (info, cpu) => {
-      info.cpuNum += 1;
-      info.user += cpu.times.user;
-      info.sys += cpu.times.sys;
-      info.idle += cpu.times.idle;
-      info.total += cpu.times.user + cpu.times.sys + cpu.times.idle;
-      return info;
+  const info = cpus.reduce(
+    (acc, c) => {
+      acc.cpuNum += 1;
+      acc.user += c.times.user;
+      acc.sys += c.times.sys;
+      acc.idle += c.times.idle;
+      acc.total += c.times.user + c.times.sys + c.times.idle;
+      return acc;
     },
     { user: 0, sys: 0, idle: 0, total: 0, cpuNum: 0 }
   );
-  const cpu = {
-    cpuNum: cpuInfo.cpuNum,
-    sys: ((cpuInfo.sys / cpuInfo.total) * 100).toFixed(2),
-    used: ((cpuInfo.user / cpuInfo.total) * 100).toFixed(2),
-    free: ((cpuInfo.idle / cpuInfo.total) * 100).toFixed(2),
+  return {
+    cpuNum: info.cpuNum,
+    model: cpus[0]?.model?.trim() ?? "unknown",
+    sys: ((info.sys / info.total) * 100).toFixed(1),
+    used: ((info.user / info.total) * 100).toFixed(1),
+    free: ((info.idle / info.total) * 100).toFixed(1),
   };
-  return cpu;
+}
+
+const mem = getMemInfo();
+const cpu = getCpuInfo();
+const uptime = (os.uptime() / 3600).toFixed(1);
+
+function bar(pct: number, width = 24) {
+  const filled = Math.round((pct / 100) * width);
+  return "█".repeat(filled) + "░".repeat(width - filled);
 }
 ---
 
 <Layout title="">
-  <div class="content">
-     <h1
-        class="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text"
-      >
-        关于
-      </h1>
-    <h3>黄河之水天上来，奔流到海不复回！</h3>
+  <section class="about">
+    <!-- whoami -->
+    <div class="block">
+      <div class="cmd"><span class="prompt">$</span> whoami</div>
+      <pre class="out">krismile · programmer
+"今日江头两三春，可怜和叶度残春。"
 
-    <div
-      class="rounded-sm p-4 my-4 border-e-gray-400 font-bold text-lg shadow-md shadow-orange-100 cursor-pointer hover:scale-[1.02] duration-500"
-    >
-      <h3>内存信息</h3>
-      <p>内存使用率：{getMemInfo().usage}%</p>
+写一些 Web 前端、Astro、TypeScript、设计的笔记。
+偶尔记些工程之外的事。
+</pre>
     </div>
-    <div
-      class="rounded-sm p-4 my-4 border-e-gray-400 font-bold text-lg shadow-md shadow-orange-100 cursor-pointer hover:scale-[1.02] duration-500"
-    >
-      <h3>CPU信息</h3>
-      <p>CPU核心数：{getCpuInfo().cpuNum}</p>
-      <p>CPU使用率：{getCpuInfo().used}%</p>
-      <p>CPU空闲率：{getCpuInfo().free}%</p>
-      <p>CPU系统使用率：{getCpuInfo().sys}%</p>
+
+    <!-- uname -->
+    <div class="block">
+      <div class="cmd"><span class="prompt">$</span> uname -a</div>
+      <pre class="out">{hostName} · {platform} · {arch} · uptime {uptime}h</pre>
     </div>
-    <div
-      class="rounded-sm p-4 my-4 border-e-gray-400 font-bold text-lg shadow-md shadow-orange-100 cursor-pointer hover:scale-[1.02] duration-500"
-    >
-      <h3>服务器信息</h3>
-      <p>服务器CPU架构：{os.cpus()[0].model}</p>
-      <p>服务器CPU核心数：{os.cpus().length}</p>
+
+    <!-- system stats -->
+    <div class="block">
+      <div class="cmd"><span class="prompt">$</span> system_profiler --short</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-head">
+            <span class="key">cpu</span>
+            <span class="val muted">{cpu.cpuNum}× · {cpu.model.slice(0, 36)}</span>
+          </div>
+          <div class="bar" aria-hidden="true"><span>{bar(parseFloat(cpu.used))}</span></div>
+          <div class="stat-foot">
+            <span>used <span class="num">{cpu.used}%</span></span>
+            <span class="sep">·</span>
+            <span>sys <span class="num">{cpu.sys}%</span></span>
+            <span class="sep">·</span>
+            <span>idle <span class="num">{cpu.free}%</span></span>
+          </div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-head">
+            <span class="key">mem</span>
+            <span class="val muted">{mem.total} GiB total</span>
+          </div>
+          <div class="bar" aria-hidden="true"><span>{bar(parseFloat(mem.usage))}</span></div>
+          <div class="stat-foot">
+            <span>used <span class="num">{mem.used} GiB</span></span>
+            <span class="sep">·</span>
+            <span>free <span class="num">{mem.free} GiB</span></span>
+            <span class="sep">·</span>
+            <span class="num">{mem.usage}%</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+
+    <!-- contact -->
+    <div class="block">
+      <div class="cmd"><span class="prompt">$</span> cat contact.txt</div>
+      <pre class="out">github   <a href="https://github.com" class="link">github.com/krismile</a>
+rss      <a href="/rss.xml" class="link">/rss.xml</a>
+</pre>
+    </div>
+
+    <div class="block">
+      <div class="cmd">
+        <span class="prompt">$</span>
+        <span class="term-cursor"></span>
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  .content {
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px 30px;
-    border-radius: 20px;
-    transition: background-color 0.5s;
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 0;
   }
+  .block { display: flex; flex-direction: column; gap: 0.5rem; }
+  .cmd { font-size: 1.0625rem; color: var(--text-primary); }
+  .prompt { color: var(--accent); margin-right: 0.5rem; }
+  .out {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.75;
+    padding-left: 1.25rem;
+    margin: 0;
+    font-family: inherit;
+    white-space: pre-wrap;
+    background: transparent;
+    border: 0;
+  }
+  .link {
+    color: var(--accent);
+    border-bottom: 1px dashed var(--accent-dim);
+  }
+  .link:hover { border-bottom-style: solid; }
 
-  html.dark .content {
-    background-color: rgba(24, 24, 27, 0.95);
-    /* 深色主题下更深的背景色 */
-    transition: background-color 0.5s;
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding-left: 1.25rem;
   }
+  @media (min-width: 768px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.875rem 1.125rem;
+    border: 1px solid var(--border-default);
+    border-radius: 4px;
+    background: var(--surface);
+    font-size: 0.875rem;
+  }
+  .stat-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .key { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .muted { color: var(--text-muted); }
+  .val.muted {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .bar {
+    color: var(--accent-dim);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    overflow: hidden;
+  }
+  .bar span { color: var(--accent); }
+  .stat-foot {
+    display: flex;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+  }
+  .num { color: var(--text-primary); }
+  .sep { color: var(--text-faint); }
 </style>

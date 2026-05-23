@@ -1,70 +1,75 @@
 import defaultTheme from "tailwindcss/defaultTheme";
-import colors from "tailwindcss/colors"; // Import colors
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  darkMode: "class",
   theme: {
     extend: {
-      colors: { // Add new color palette
-        primary: colors.sky,
-        secondary: colors.amber,
-        neutraltext: colors.neutral[700],
-        neutralbg: colors.neutral[100],
-        darktext: colors.neutral[200],
-        darkbg: colors.neutral[800],
+      colors: {
+        term: {
+          bg: "#0a0a0a",
+          surface: "#111111",
+          elevated: "#161616",
+          "border-subtle": "#1a1a1a",
+          "border-default": "#262626",
+          "border-strong": "#404040",
+          "text-primary": "#ededed",
+          "text-secondary": "#a3a3a3",
+          "text-muted": "#525252",
+          "text-faint": "#2a2a2a",
+          accent: "#f5b042",
+          "accent-soft": "#ffb86c",
+          "accent-dim": "#a3741f",
+        },
+        light: {
+          bg: "#fafaf7",
+          surface: "#f4f3ee",
+          elevated: "#ecebe4",
+          "border-subtle": "#e7e5de",
+          "border-default": "#d6d3c7",
+          "border-strong": "#a8a29a",
+          "text-primary": "#1a1a1a",
+          "text-secondary": "#525252",
+          "text-muted": "#737373",
+          "text-faint": "#d4d4d4",
+          accent: "#c2410c",
+          "accent-soft": "#ea580c",
+          "accent-dim": "#9a3412",
+        },
       },
       fontFamily: {
-        sans: ["Inter", ...defaultTheme.fontFamily.sans],
-        serif: ["Merriweather", ...defaultTheme.fontFamily.serif],
-        kalam: ["Kalam cursive"],
-        // 科技感字体
-        heading: ["Space Grotesk", "sans-serif"],
-        body: ["DM Sans", "sans-serif"],
-        tech: ["Orbitron", "sans-serif"],
+        mono: ['"Maple Mono CN"', '"JetBrains Mono"', ...defaultTheme.fontFamily.mono],
+        sans: ['"Maple Mono CN"', '"JetBrains Mono"', "system-ui", ...defaultTheme.fontFamily.sans],
       },
-
+      fontSize: {
+        "2xs": ["0.6875rem", { lineHeight: "1rem" }],
+      },
+      letterSpacing: {
+        terminal: "0.02em",
+      },
       keyframes: {
-        wiggle: {
-          "0%": { opacity: 0 },
-          "100%": { opacity: 1 },
+        "cursor-blink": {
+          "0%, 49%": { opacity: "1" },
+          "50%, 100%": { opacity: "0" },
         },
-        typing: {
-          "0%": { width: 0 },
-          "100%": { width: '23ch' },
-        },
-        // 科技感动画
-        "float": {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-20px)" },
-        },
-        "glow": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.5" },
-        },
-        "pulse-border": {
-          "0%, 100%": { borderColor: "rgba(59, 130, 246, 0.5)" },
-          "50%": { borderColor: "rgba(59, 130, 246, 1)" },
-        },
-        "scan-line": {
-          "0%": { transform: "translateY(-100%)" },
-          "100%": { transform: "translateY(100%)" },
-        },
-        "cyber-glow": {
-          "0%, 100%": {
-            boxShadow: "0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3)",
-          },
-          "50%": {
-            boxShadow: "0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.5)",
-          },
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(4px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
-	  animation: {
-        wiggle: 'wiggle 0.5s ease-in-out',
-        float: 'float 6s ease-in-out infinite',
-        glow: 'glow 2s ease-in-out infinite',
-        "pulse-border": 'pulse-border 2s ease-in-out infinite',
-        "scan-line": 'scan-line 3s linear infinite',
-        "cyber-glow": 'cyber-glow 2s ease-in-out infinite',
+      animation: {
+        "cursor-blink": "cursor-blink 1.05s steps(1) infinite",
+        "fade-up": "fade-up 200ms ease-out",
+      },
+      borderRadius: {
+        DEFAULT: "2px",
+        sm: "2px",
+        md: "4px",
+        lg: "4px",
+        xl: "6px",
+        "2xl": "6px",
+        "3xl": "8px",
       },
     },
   },

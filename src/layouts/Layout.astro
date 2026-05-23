@@ -1,14 +1,17 @@
 ---
-import "@fontsource/kalam";
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
 import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
 import LevitationMenu from "@components/LevitationMenu";
+import SearchPalette from "@components/SearchPalette";
 const { title } = Astro.props;
+const { pathname } = Astro.locals;
+const cwd = pathname === "/" ? "~" : "~" + pathname.replace(/\/$/, "");
+const displayTitle = title || "krismile.blog";
 ---
 
-<html lang="zh-cn">
+<html lang="zh-cn" class="dark">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -22,41 +25,63 @@ const { title } = Astro.props;
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="你的网站标题"
+      title="krismile.blog"
       href={new URL("rss.xml", Astro.site)}
     />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <title>{displayTitle}</title>
     <ViewTransitions />
   </head>
   <body>
-    <div class="flex flex-col min-h-screen">
-      <Header />
-      <div class="flex-grow">
-        <div class="glass cyber-border rounded-2xl mx-4 sm:mx-8 md:mx-16 lg:mx-32 xl:mx-48 mt-24 mb-8 p-8 relative overflow-hidden">
-          <!-- 背景网格装饰 -->
-          <div class="absolute inset-0 grid-bg opacity-20 pointer-events-none"></div>
+    <div class="min-h-screen flex flex-col">
+      <Header cwd={cwd} />
 
-          <!-- 标题区域 -->
-          <div class="relative z-10">
-            <h1 class="font-heading text-4xl md:text-5xl font-bold mb-6 gradient-text neon-text">{title}</h1>
-            <div class="prose prose-lg dark:prose-invert max-w-none font-body">
-              <slot />
+      <main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 pt-24 pb-16">
+        {title && (
+          <header class="mb-10 pb-6 border-b border-dashed border-term-border-default">
+            <div class="text-base text-term-text-muted mb-2">
+              <span class="term-prompt">$</span> cat
+              <span class="ml-2 text-term-text-secondary">{(title + ".md").toLowerCase().replace(/\s+/g, "-")}</span>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="fixed bottom-10 right-0 z-50">
+            <h1 class="text-3xl sm:text-4xl md:text-[2.5rem] font-semibold text-term-text-primary tracking-tight">
+              {title}
+            </h1>
+          </header>
+        )}
+        <slot />
+      </main>
+
+      <div class="fixed bottom-6 right-4 sm:hidden z-50">
         <LevitationMenu client:load />
       </div>
+
+      <SearchPalette client:idle />
+
       <Footer />
     </div>
     <script>
-      import "../scripts/click-effect.js"
+      import "../scripts/click-effect.js";
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/sw.js");
       }
     </script>
   </body>
 </html>
+
+<style is:global>
+  .text-term-accent { color: var(--accent); }
+  .text-term-accent-soft { color: var(--accent-soft); }
+  .text-term-accent-dim { color: var(--accent-dim); }
+  .text-term-text-primary { color: var(--text-primary); }
+  .text-term-text-secondary { color: var(--text-secondary); }
+  .text-term-text-muted { color: var(--text-muted); }
+  .text-term-text-faint { color: var(--text-faint); }
+  .border-term-border-default { border-color: var(--border-default); }
+  .border-term-border-subtle { border-color: var(--border-subtle); }
+  .border-term-border-strong { border-color: var(--border-strong); }
+  .border-term-accent-dim { border-color: var(--accent-dim); }
+  .bg-term-bg { background-color: var(--bg); }
+  .bg-term-surface { background-color: var(--surface); }
+  .bg-term-elevated { background-color: var(--elevated); }
+</style>
