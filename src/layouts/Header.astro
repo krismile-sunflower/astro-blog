@@ -14,7 +14,7 @@ const navItems = [
 ---
 
 <header class="header">
-  <div class="header-inner" data-motion="shell">
+  <div class="header-inner">
     <div class="header-left">
       <span class="dots terminal-dots" aria-hidden="true">
         <span class="terminal-dot red"></span>
@@ -71,7 +71,7 @@ const navItems = [
   }
 
   .header-inner {
-    max-width: 64rem;
+    max-width: var(--site-max-width);
     margin: 0 auto;
     padding: 0.625rem 0.75rem;
     display: flex;

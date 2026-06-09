@@ -2,15 +2,33 @@ import { gsap } from "gsap";
 
 let motionContext: ReturnType<typeof gsap.matchMedia> | null = null;
 let hoverController: AbortController | null = null;
+let bootFrame = 0;
+let bootedKey = "";
 
 const select = <T extends Element>(selector: string) =>
   Array.from(document.querySelectorAll<T>(selector));
 
 function resetMotion() {
+  if (bootFrame) {
+    cancelAnimationFrame(bootFrame);
+    bootFrame = 0;
+  }
   motionContext?.revert();
   motionContext = null;
   hoverController?.abort();
   hoverController = null;
+}
+
+function scheduleTerminalMotion() {
+  const key = `${location.pathname}${location.search}${location.hash}`;
+
+  if (bootFrame) cancelAnimationFrame(bootFrame);
+  bootFrame = requestAnimationFrame(() => {
+    bootFrame = 0;
+    if (bootedKey === key) return;
+    bootedKey = key;
+    bootTerminalMotion();
+  });
 }
 
 function bootTerminalMotion() {
@@ -34,7 +52,7 @@ function bootTerminalMotion() {
       desktop: "(min-width: 768px)",
     },
     (context) => {
-      const { reduce, desktop } = context.conditions ?? {};
+      const { reduce } = context.conditions ?? {};
       const animated = [...shell, ...panels, ...blocks, ...rows, ...chips, ...glow];
 
       if (reduce) {
@@ -52,24 +70,24 @@ function bootTerminalMotion() {
       if (shell.length) {
         tl.fromTo(
           shell,
-          { autoAlpha: 0, y: 18, scale: desktop ? 0.985 : 1 },
-          { autoAlpha: 1, y: 0, scale: 1, stagger: 0.04 }
+          { autoAlpha: 0, y: 8 },
+          { autoAlpha: 1, y: 0, stagger: 0.035 }
         );
       }
 
       if (panels.length) {
         tl.fromTo(
           panels,
-          { autoAlpha: 0, y: 18 },
+          { autoAlpha: 0, y: 10 },
           { autoAlpha: 1, y: 0, stagger: 0.08 },
-          shell.length ? "-=0.38" : 0
+          shell.length ? "-=0.42" : 0
         );
       }
 
       if (blocks.length) {
         tl.fromTo(
           blocks,
-          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 0, y: 8 },
           { autoAlpha: 1, y: 0, stagger: 0.075 },
           "-=0.36"
         );
@@ -78,7 +96,7 @@ function bootTerminalMotion() {
       if (rows.length) {
         tl.fromTo(
           rows,
-          { autoAlpha: 0, y: 12 },
+          { autoAlpha: 0, y: 6 },
           { autoAlpha: 1, y: 0, stagger: { each: 0.035, from: "start" } },
           "-=0.35"
         );
@@ -126,10 +144,13 @@ function bootTerminalMotion() {
 }
 
 document.addEventListener("astro:before-swap", resetMotion);
-document.addEventListener("astro:page-load", bootTerminalMotion);
+document.addEventListener("astro:before-swap", () => {
+  bootedKey = "";
+});
+document.addEventListener("astro:page-load", scheduleTerminalMotion);
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", bootTerminalMotion, { once: true });
+  document.addEventListener("DOMContentLoaded", scheduleTerminalMotion, { once: true });
 } else {
-  bootTerminalMotion();
+  scheduleTerminalMotion();
 }

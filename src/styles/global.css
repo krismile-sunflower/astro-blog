@@ -24,6 +24,7 @@
     --rose: #ff6b81;
     --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.34);
     --shadow-sharp: 0 12px 32px rgba(0, 0, 0, 0.32);
+    --site-max-width: 72rem;
     --selection: rgba(245, 176, 66, 0.25);
 }
 
