@@ -37,11 +37,7 @@ function bootTerminalMotion() {
   const scope = document.querySelector("[data-motion-root]");
   if (!scope) return;
 
-  const shell = select<HTMLElement>("[data-motion='shell']");
-  const panels = select<HTMLElement>("[data-motion='panel']");
-  const blocks = select<HTMLElement>("[data-motion='block']");
-  const rows = select<HTMLElement>("[data-motion='row']");
-  const chips = select<HTMLElement>("[data-motion='chip']");
+  const ordered = select<HTMLElement>("[data-motion]:not([data-motion='glow'])");
   const glow = select<HTMLElement>("[data-motion='glow']");
   const hoverables = select<HTMLElement>("[data-motion-hover]");
 
@@ -53,7 +49,7 @@ function bootTerminalMotion() {
     },
     (context) => {
       const { reduce } = context.conditions ?? {};
-      const animated = [...shell, ...panels, ...blocks, ...rows, ...chips, ...glow];
+      const animated = [...ordered, ...glow];
 
       if (reduce) {
         gsap.set(animated, {
@@ -64,50 +60,23 @@ function bootTerminalMotion() {
       }
 
       const tl = gsap.timeline({
-        defaults: { duration: 0.62, ease: "power3.out" },
+        defaults: { duration: 0.46, ease: "power3.out" },
       });
 
-      if (shell.length) {
+      if (ordered.length) {
         tl.fromTo(
-          shell,
-          { autoAlpha: 0, y: 8 },
-          { autoAlpha: 1, y: 0, stagger: 0.035 }
-        );
-      }
-
-      if (panels.length) {
-        tl.fromTo(
-          panels,
-          { autoAlpha: 0, y: 10 },
-          { autoAlpha: 1, y: 0, stagger: 0.08 },
-          shell.length ? "-=0.42" : 0
-        );
-      }
-
-      if (blocks.length) {
-        tl.fromTo(
-          blocks,
-          { autoAlpha: 0, y: 8 },
-          { autoAlpha: 1, y: 0, stagger: 0.075 },
-          "-=0.36"
-        );
-      }
-
-      if (rows.length) {
-        tl.fromTo(
-          rows,
-          { autoAlpha: 0, y: 6 },
-          { autoAlpha: 1, y: 0, stagger: { each: 0.035, from: "start" } },
-          "-=0.35"
-        );
-      }
-
-      if (chips.length) {
-        tl.fromTo(
-          chips,
-          { autoAlpha: 0, y: 8, scale: 0.97 },
-          { autoAlpha: 1, y: 0, scale: 1, stagger: 0.04 },
-          "-=0.28"
+          ordered,
+          {
+            autoAlpha: 0,
+            y: (_index, target) => target.dataset.motion === "row" ? 6 : 8,
+            scale: (_index, target) => target.dataset.motion === "chip" ? 0.985 : 1,
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            stagger: { each: 0.045, from: "start" },
+          }
         );
       }
 
