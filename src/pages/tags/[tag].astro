@@ -26,7 +26,7 @@ function fmtDate(d: Date) {
 
 <Layout title="">
   <section class="tag-page">
-    <header class="head">
+    <header class="head terminal-panel" data-motion="panel">
       <div class="cmd">
         <span class="prompt">$</span> grep -l
         <span class="arg">{`"#${tag}"`}</span> posts/*.md
@@ -41,7 +41,7 @@ function fmtDate(d: Date) {
     <ul class="posts">
       {posts.map((post: any) => (
         <li class="post">
-          <a href={`/posts/${post.slug}`} class="row" data-astro-prefetch>
+          <a href={`/posts/${post.slug}`} class="row terminal-row" data-motion="row" data-motion-hover data-astro-prefetch>
             <span class="date">{fmtDate(new Date(post.data.pubDate))}</span>
             <span class="title">
               <span class="chev">›</span>
@@ -66,8 +66,7 @@ function fmtDate(d: Date) {
     display: flex;
     flex-direction: column;
     gap: 0.375rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px dashed var(--border-default);
+    padding: 1.125rem 1.25rem;
   }
   .cmd { font-size: 1.0625rem; color: var(--text-primary); }
   .prompt { color: var(--accent); margin-right: 0.5rem; }
@@ -78,7 +77,15 @@ function fmtDate(d: Date) {
   .back { color: var(--text-secondary); }
   .back:hover { color: var(--accent); }
 
-  .posts { list-style: none; margin: 0; padding: 0; }
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    background: rgba(var(--surface-rgb), 0.72);
+    box-shadow: var(--shadow-sharp);
+  }
   .post + .post .row { border-top: 1px dashed var(--border-subtle); }
 
   .row {
@@ -86,12 +93,9 @@ function fmtDate(d: Date) {
     grid-template-columns: 110px 1fr;
     grid-template-areas: "date title" ". desc" ". tags";
     column-gap: 1.25rem;
-    padding: 1.25rem 0.5rem;
+    padding: 1.125rem 1.25rem;
     color: inherit;
-    border-left: 2px solid transparent;
-    transition: background 150ms ease, border-color 150ms ease;
   }
-  .row:hover { background: var(--surface); border-left-color: var(--accent); }
 
   .date { grid-area: date; color: var(--text-muted); font-size: 0.875rem; padding-top: 0.125rem; }
   .title {

@@ -2,36 +2,54 @@
 @import url('https://cdn.jsdelivr.net/npm/@chinese-fonts/maple-mono-cn/dist/MapleMono-CN-SemiBold/result.css');
 
 :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --elevated: #161616;
-    --border-subtle: #1a1a1a;
-    --border-default: #262626;
-    --border-strong: #404040;
-    --text-primary: #ededed;
-    --text-secondary: #a3a3a3;
-    --text-muted: #737373;
-    --text-faint: #2a2a2a;
+    --bg: #08090a;
+    --bg-rgb: 8, 9, 10;
+    --surface: #111315;
+    --surface-rgb: 17, 19, 21;
+    --elevated: #181b1e;
+    --elevated-rgb: 24, 27, 30;
+    --border-subtle: #202429;
+    --border-default: #323942;
+    --border-strong: #55606b;
+    --text-primary: #f3f0e8;
+    --text-secondary: #bbb5aa;
+    --text-muted: #837d72;
+    --text-faint: #393f46;
     --accent: #f5b042;
-    --accent-soft: #ffb86c;
+    --accent-soft: #ffd28a;
     --accent-dim: #a3741f;
+    --accent-rgb: 245, 176, 66;
+    --cyan: #5cc8d7;
+    --green: #89d185;
+    --rose: #ff6b81;
+    --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.34);
+    --shadow-sharp: 0 12px 32px rgba(0, 0, 0, 0.32);
     --selection: rgba(245, 176, 66, 0.25);
 }
 
 html.light {
-    --bg: #fafaf7;
-    --surface: #f4f3ee;
-    --elevated: #ecebe4;
-    --border-subtle: #e7e5de;
-    --border-default: #d6d3c7;
-    --border-strong: #a8a29a;
-    --text-primary: #1a1a1a;
-    --text-secondary: #525252;
-    --text-muted: #737373;
-    --text-faint: #d4d4d4;
-    --accent: #c2410c;
-    --accent-soft: #ea580c;
-    --accent-dim: #9a3412;
+    --bg: #f7f4ec;
+    --bg-rgb: 247, 244, 236;
+    --surface: #fffdf7;
+    --surface-rgb: 255, 253, 247;
+    --elevated: #eee8dc;
+    --elevated-rgb: 238, 232, 220;
+    --border-subtle: #e2d8c8;
+    --border-default: #cbbda8;
+    --border-strong: #9c8c76;
+    --text-primary: #211d18;
+    --text-secondary: #574f45;
+    --text-muted: #7d7163;
+    --text-faint: #c9bdab;
+    --accent: #b94816;
+    --accent-soft: #d66a25;
+    --accent-dim: #8d3515;
+    --accent-rgb: 185, 72, 22;
+    --cyan: #12798a;
+    --green: #3c7a3f;
+    --rose: #b8445a;
+    --shadow-soft: 0 24px 70px rgba(65, 45, 18, 0.16);
+    --shadow-sharp: 0 12px 26px rgba(65, 45, 18, 0.14);
     --selection: rgba(194, 65, 12, 0.18);
 }
 
@@ -42,7 +60,7 @@ html {
     line-height: 1.7;
     color: var(--text-primary);
     background-color: var(--bg);
-    letter-spacing: 0.005em;
+    letter-spacing: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -57,8 +75,36 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background-color: var(--bg);
+    background:
+        radial-gradient(circle at 15% 6%, rgba(var(--accent-rgb), 0.16), transparent 28rem),
+        radial-gradient(circle at 84% 8%, color-mix(in oklab, var(--cyan) 18%, transparent), transparent 26rem),
+        linear-gradient(180deg, color-mix(in oklab, var(--bg) 92%, #111827), var(--bg) 34rem);
     overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(var(--accent-rgb), 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--accent-rgb), 0.045) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: linear-gradient(to bottom, black, transparent 75%);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    opacity: 0.32;
+    background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px);
+    mix-blend-mode: soft-light;
 }
 
 ::selection {
@@ -91,6 +137,15 @@ a {
     transition: color 150ms ease;
 }
 
+button, input {
+    font: inherit;
+}
+
+:focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--accent) 72%, white);
+    outline-offset: 3px;
+}
+
 a:hover {
     color: var(--accent);
 }
@@ -98,7 +153,7 @@ a:hover {
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     color: var(--text-primary);
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     line-height: 1.25;
     margin: 0;
 }
@@ -121,13 +176,164 @@ code {
 }
 
 pre {
-    background: var(--surface) !important;
+    background: color-mix(in oklab, var(--surface) 92%, var(--accent) 8%) !important;
     border: 1px solid var(--border-default);
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 1rem 1.25rem;
     overflow-x: auto;
     line-height: 1.6;
     font-size: 0.9375rem;
+}
+
+.site-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -4;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.site-glow {
+    position: absolute;
+    width: 28rem;
+    height: 28rem;
+    border-radius: 999px;
+    filter: blur(70px);
+    opacity: 0.34;
+}
+
+.site-glow-a {
+    top: -14rem;
+    left: -10rem;
+    background: rgba(var(--accent-rgb), 0.38);
+}
+
+.site-glow-b {
+    right: -12rem;
+    top: 10rem;
+    background: color-mix(in oklab, var(--cyan) 28%, transparent);
+}
+
+.site-shell {
+    position: relative;
+    isolation: isolate;
+}
+
+.page-title {
+    margin-bottom: 2.5rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(var(--surface-rgb), 0.9), rgba(var(--surface-rgb), 0.72)),
+        linear-gradient(90deg, rgba(var(--accent-rgb), 0.08), transparent 56%);
+    box-shadow: var(--shadow-sharp);
+}
+
+[data-motion='shell'],
+[data-motion='panel'],
+[data-motion='block'],
+[data-motion='row'],
+[data-motion='chip'] {
+    will-change: transform, opacity;
+}
+
+.terminal-panel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(var(--surface-rgb), 0.94), rgba(var(--surface-rgb), 0.76)),
+        radial-gradient(circle at 15% 0%, rgba(var(--accent-rgb), 0.12), transparent 22rem);
+    box-shadow: var(--shadow-soft);
+}
+
+.terminal-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.07), transparent 34%);
+}
+
+.terminal-titlebar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(var(--elevated-rgb), 0.78);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.terminal-dots {
+    display: inline-flex;
+    gap: 0.375rem;
+    flex-shrink: 0;
+}
+
+.terminal-dot {
+    width: 0.6875rem;
+    height: 0.6875rem;
+    border-radius: 999px;
+    background: var(--border-strong);
+}
+
+.terminal-dot.red { background: var(--rose); }
+.terminal-dot.yellow { background: var(--accent); }
+.terminal-dot.green { background: var(--green); }
+
+.terminal-status {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+}
+
+.terminal-status strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.terminal-command {
+    color: var(--text-primary);
+    font-size: 1.0625rem;
+}
+
+.terminal-output {
+    color: var(--text-secondary);
+    line-height: 1.75;
+}
+
+.terminal-row {
+    position: relative;
+    color: inherit;
+    border-left: 2px solid transparent;
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.terminal-row:hover {
+    background: color-mix(in oklab, var(--elevated) 72%, transparent);
+    border-left-color: var(--accent);
+}
+
+.terminal-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid var(--border-default);
+    border-radius: 999px;
+    background: rgba(var(--surface-rgb), 0.72);
+    color: var(--text-secondary);
+    transition: color 150ms ease, border-color 150ms ease, background 150ms ease, transform 150ms ease;
+}
+
+.terminal-chip:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    background: rgba(var(--elevated-rgb), 0.88);
 }
 
 pre code {

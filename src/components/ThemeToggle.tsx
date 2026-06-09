@@ -85,7 +85,7 @@ export default function ThemeToggle() {
           padding: 0.375rem 0.75rem;
           cursor: pointer;
           transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
-          letter-spacing: 0.02em;
+          letter-spacing: 0;
         }
         .theme-toggle:hover {
           color: var(--accent);

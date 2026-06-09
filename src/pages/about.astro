@@ -56,7 +56,7 @@ function bar(pct: number, width = 24) {
 <Layout title="">
   <section class="about">
     <!-- whoami -->
-    <div class="block">
+    <div class="block terminal-panel intro-panel" data-motion="panel">
       <div class="cmd"><span class="prompt">$</span> whoami</div>
       <pre class="out">krismile · programmer
 "今日江头两三春，可怜和叶度残春。"
@@ -67,16 +67,16 @@ function bar(pct: number, width = 24) {
     </div>
 
     <!-- uname -->
-    <div class="block">
+    <div class="block terminal-panel" data-motion="block">
       <div class="cmd"><span class="prompt">$</span> uname -a</div>
       <pre class="out">{hostName} · {platform} · {arch} · uptime {uptime}h</pre>
     </div>
 
     <!-- system stats -->
-    <div class="block">
+    <div class="block terminal-panel" data-motion="block">
       <div class="cmd"><span class="prompt">$</span> system_profiler --short</div>
       <div class="stats">
-        <div class="stat">
+        <div class="stat" data-motion="row" data-motion-hover>
           <div class="stat-head">
             <span class="key">cpu</span>
             <span class="val muted">{cpu.cpuNum}× · {cpu.model.slice(0, 36)}</span>
@@ -91,7 +91,7 @@ function bar(pct: number, width = 24) {
           </div>
         </div>
 
-        <div class="stat">
+        <div class="stat" data-motion="row" data-motion-hover>
           <div class="stat-head">
             <span class="key">mem</span>
             <span class="val muted">{mem.total} GiB total</span>
@@ -109,14 +109,14 @@ function bar(pct: number, width = 24) {
     </div>
 
     <!-- contact -->
-    <div class="block">
+    <div class="block terminal-panel" data-motion="block">
       <div class="cmd"><span class="prompt">$</span> cat contact.txt</div>
       <pre class="out">github   <a href="https://github.com" class="link">github.com/krismile</a>
 rss      <a href="/rss.xml" class="link">/rss.xml</a>
 </pre>
     </div>
 
-    <div class="block">
+    <div class="block cursor-block" data-motion="block">
       <div class="cmd">
         <span class="prompt">$</span>
         <span class="term-cursor"></span>
@@ -129,17 +129,30 @@ rss      <a href="/rss.xml" class="link">/rss.xml</a>
   .about {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.25rem;
     padding: 1rem 0;
   }
-  .block { display: flex; flex-direction: column; gap: 0.5rem; }
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.125rem 1.25rem;
+  }
+  .intro-panel {
+    background:
+      linear-gradient(135deg, rgba(var(--accent-rgb), 0.11), transparent 42%),
+      rgba(var(--surface-rgb), 0.82);
+  }
+  .cursor-block {
+    padding: 0.25rem 0 0;
+  }
   .cmd { font-size: 1.0625rem; color: var(--text-primary); }
   .prompt { color: var(--accent); margin-right: 0.5rem; }
   .out {
     color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.75;
-    padding-left: 1.25rem;
+    padding-left: 0;
     margin: 0;
     font-family: inherit;
     white-space: pre-wrap;
@@ -156,7 +169,7 @@ rss      <a href="/rss.xml" class="link">/rss.xml</a>
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.25rem;
-    padding-left: 1.25rem;
+    padding-left: 0;
   }
   @media (min-width: 768px) {
     .stats { grid-template-columns: 1fr 1fr; }
@@ -167,16 +180,17 @@ rss      <a href="/rss.xml" class="link">/rss.xml</a>
     gap: 0.5rem;
     padding: 0.875rem 1.125rem;
     border: 1px solid var(--border-default);
-    border-radius: 4px;
-    background: var(--surface);
+    border-radius: 8px;
+    background: rgba(var(--elevated-rgb), 0.54);
     font-size: 0.875rem;
+    box-shadow: var(--shadow-sharp);
   }
   .stat-head {
     display: flex;
     align-items: baseline;
     gap: 0.75rem;
   }
-  .key { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .key { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0; }
   .muted { color: var(--text-muted); }
   .val.muted {
     overflow: hidden;
@@ -186,7 +200,7 @@ rss      <a href="/rss.xml" class="link">/rss.xml</a>
   .bar {
     color: var(--accent-dim);
     line-height: 1;
-    letter-spacing: -0.05em;
+    letter-spacing: 0;
     overflow: hidden;
   }
   .bar span { color: var(--accent); }

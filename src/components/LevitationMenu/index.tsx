@@ -1,3 +1,4 @@
+import { gsap } from "gsap";
 import { useEffect, useRef, useState } from "preact/hooks";
 
 const items = [
@@ -11,6 +12,7 @@ export default function LevitationMenu() {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState<string>("/");
   const panelRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") setCurrent(window.location.pathname);
@@ -19,17 +21,50 @@ export default function LevitationMenu() {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") closeMenu();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const panel = panelRef.current;
+    const backdrop = backdropRef.current;
+    const links = panel?.querySelectorAll(".panel-link");
+    if (!panel || !backdrop) return;
+    if (reduce) {
+      gsap.set([backdrop, panel, ...(links ? Array.from(links) : [])], {
+        autoAlpha: 1,
+        clearProps: "transform,opacity,visibility",
+      });
+      return;
+    }
+    gsap.timeline({ defaults: { ease: "power3.out" } })
+      .fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.16 }, 0)
+      .fromTo(panel, { autoAlpha: 0, y: 14, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.24 }, 0)
+      .fromTo(links ?? [], { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.035 }, 0.08);
+  }, [open]);
+
+  function closeMenu() {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const panel = panelRef.current;
+    const backdrop = backdropRef.current;
+    if (reduce || !panel || !backdrop) {
+      setOpen(false);
+      return;
+    }
+    gsap.timeline({ onComplete: () => setOpen(false) })
+      .to(panel, { autoAlpha: 0, y: 10, scale: 0.97, duration: 0.16, ease: "power2.in" }, 0)
+      .to(backdrop, { autoAlpha: 0, duration: 0.16, ease: "power2.out" }, 0);
+  }
+
   return (
     <>
       <button
         class={`fab ${open ? "fab-open" : ""}`}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => open ? closeMenu() : setOpen(true)}
         aria-label={open ? "close menu" : "open menu"}
         aria-expanded={open}
       >
@@ -40,7 +75,7 @@ export default function LevitationMenu() {
 
       {open && (
         <>
-          <div class="backdrop" onClick={() => setOpen(false)} />
+          <div class="backdrop" ref={backdropRef} onClick={closeMenu} />
           <div class="panel" ref={panelRef}>
             <div class="panel-title">
               <span class="prompt">$</span> cd
@@ -73,7 +108,7 @@ export default function LevitationMenu() {
           padding: 0.5rem 0.875rem;
           font-size: 1rem;
           cursor: pointer;
-          letter-spacing: 0.05em;
+          letter-spacing: 0;
           transition: border-color 150ms ease, background 150ms ease;
         }
         .fab:hover, .fab-open {
@@ -100,11 +135,6 @@ export default function LevitationMenu() {
           border: 1px solid var(--border-default);
           border-radius: 4px;
           padding: 0.5rem 0;
-          animation: panel-in 150ms ease-out;
-        }
-        @keyframes panel-in {
-          from { opacity: 0; transform: translateY(4px); }
-          to   { opacity: 1; transform: translateY(0); }
         }
         .panel-title {
           padding: 0.375rem 0.875rem 0.5rem;

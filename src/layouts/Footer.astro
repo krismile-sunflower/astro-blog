@@ -3,7 +3,7 @@ const year = new Date().getFullYear();
 const buildHash = Math.random().toString(36).slice(2, 9);
 ---
 
-<footer class="footer">
+<footer class="footer" data-motion="panel">
   <div class="footer-inner">
     <div class="cell left">
       <span class="dot" aria-hidden="true"></span>
@@ -24,19 +24,24 @@ const buildHash = Math.random().toString(36).slice(2, 9);
 
 <style>
   .footer {
-    border-top: 1px solid var(--border-subtle);
-    background: var(--bg);
+    padding: 0 1rem 1rem;
+    background: transparent;
   }
   .footer-inner {
     max-width: 64rem;
     margin: 0 auto;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     font-size: 0.8125rem;
     color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    background: rgba(var(--surface-rgb), 0.48);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
   .cell { display: flex; align-items: center; gap: 0.5rem; }
   .cell.center { display: none; }
@@ -46,7 +51,7 @@ const buildHash = Math.random().toString(36).slice(2, 9);
   .dot {
     width: 6px; height: 6px; border-radius: 50%;
     background: var(--accent);
-    box-shadow: 0 0 6px var(--accent-dim);
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.55);
   }
   .muted { color: var(--text-muted); }
   .link {

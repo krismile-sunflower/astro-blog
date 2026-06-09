@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "preact/hooks";
+import { gsap } from "gsap";
+import { useCallback, useEffect, useMemo, useRef, useState } from "preact/hooks";
 
 type PFResultData = {
   url: string;
@@ -78,16 +79,32 @@ export default function SearchPalette() {
   const [status, setStatus] = useState<"idle" | "loading" | "ready" | "searching" | "missing">("idle");
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const reqIdRef = useRef(0);
+
+  const closePalette = useCallback(() => {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const panel = panelRef.current;
+    const backdrop = backdropRef.current;
+    if (reduce || !panel || !backdrop) {
+      setOpen(false);
+      return;
+    }
+    gsap.timeline({ onComplete: () => setOpen(false) })
+      .to(panel, { autoAlpha: 0, y: -10, scale: 0.985, duration: 0.16, ease: "power2.in" }, 0)
+      .to(backdrop, { autoAlpha: 0, duration: 0.18, ease: "power2.out" }, 0);
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const isMod = e.metaKey || e.ctrlKey;
       if (isMod && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen((o) => !o);
+        if (open) closePalette();
+        else setOpen(true);
       } else if (e.key === "Escape" && open) {
-        setOpen(false);
+        closePalette();
       }
     };
     const onOpen = () => setOpen(true);
@@ -97,7 +114,7 @@ export default function SearchPalette() {
       document.removeEventListener("keydown", onKey);
       window.removeEventListener("search:open", onOpen as EventListener);
     };
-  }, [open]);
+  }, [open, closePalette]);
 
   useEffect(() => {
     if (!open) return;
@@ -117,6 +134,29 @@ export default function SearchPalette() {
       setRows([]);
     }
   }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const panel = panelRef.current;
+    const backdrop = backdropRef.current;
+    if (!panel || !backdrop) return;
+    if (reduce) {
+      gsap.set([backdrop, panel], { autoAlpha: 1, clearProps: "transform,opacity,visibility" });
+      return;
+    }
+    gsap.timeline({ defaults: { ease: "power3.out" } })
+      .fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.18 }, 0)
+      .fromTo(panel, { autoAlpha: 0, y: -18, scale: 0.975 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.26 }, 0.02);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open || rows.length === 0) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const rowEls = listRef.current?.querySelectorAll(".sp-row");
+    if (!rowEls?.length) return;
+    gsap.fromTo(rowEls, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.22, stagger: 0.025, ease: "power2.out" });
+  }, [open, rows.length]);
 
   useEffect(() => {
     if (open) {
@@ -203,8 +243,8 @@ export default function SearchPalette() {
   }, [status, rows.length, query]);
 
   return (
-    <div class="sp-backdrop" onClick={() => setOpen(false)}>
-      <div class="sp-panel" onClick={(e) => e.stopPropagation()}>
+    <div class="sp-backdrop" ref={backdropRef} onClick={closePalette}>
+      <div class="sp-panel" ref={panelRef} onClick={(e) => e.stopPropagation()}>
         <div class="sp-titlebar">
           <span class="sp-dots">
             <span class="sp-dot" />
@@ -311,9 +351,7 @@ export default function SearchPalette() {
           align-items: flex-start;
           justify-content: center;
           padding: 14vh 1rem 1rem;
-          animation: sp-fade 120ms ease-out;
         }
-        @keyframes sp-fade { from { opacity: 0 } to { opacity: 1 } }
 
         .sp-panel {
           width: 100%;
@@ -326,9 +364,7 @@ export default function SearchPalette() {
           flex-direction: column;
           max-height: 70vh;
           overflow: hidden;
-          animation: sp-up 150ms ease-out;
         }
-        @keyframes sp-up { from { opacity: 0; transform: translateY(-6px) } to { opacity: 1; transform: translateY(0) } }
 
         .sp-titlebar {
           display: flex;
